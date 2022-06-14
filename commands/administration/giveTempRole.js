@@ -1,10 +1,10 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import ms from 'ms';
 import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
-import { giveTempRole } from '../../utilities.js';
+import { giveTempRole } from '../../utilities/tempRoles.js';
 import { logTempRoleGiven } from '../../loggers.js';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+const config = JSON.parse(await fs.readFile('./config.json'));
 
 const textInput = new TextInputComponent({ customId: 'reason', label: 'Reason', style: 'SHORT', required: true });
 const row = new MessageActionRow({ components: [textInput] });

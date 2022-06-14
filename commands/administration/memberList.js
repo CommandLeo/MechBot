@@ -1,9 +1,9 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import got from 'got';
 import { MessageEmbed } from 'discord.js';
 import { Formatters } from 'discord.js';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+const config = JSON.parse(await fs.readFile('./config.json'));
 
 export const command = {
 	data: {
@@ -18,6 +18,7 @@ export const command = {
 
 		await interaction.deferReply({ ephemeral: true });
 
+		const mechEmoji = emojiManager?.cache.find(emoji => emoji.name == 'mechanistsSpin');
 		const memberData = Object.entries(memberList).map(([memberName, { youtube, twitch, twitter, github }], i) => {
 			const escapedName = memberName.replace(/\s+/gi, '');
 			const emoji = emojiManager?.cache.find(({ name }) => name === escapedName);
@@ -40,7 +41,7 @@ export const command = {
 				if (i % 3 != 2) field.name += '    𝅺';
 			});
 			const embed = new MessageEmbed({ color: '#3498db', fields });
-			if (i == 0) embed.setTitle(`<a:mechanistsSpin:973512320959533056> Mechanists Members`);
+			if (i == 0) embed.setTitle(`${mechEmoji} Mechanists Members`);
 			return embed;
 		});
 
@@ -53,7 +54,7 @@ export const command = {
 			}
 		}
 		const message = await infoChannel.send({ embeds });
-		fs.writeFileSync('./config.json', JSON.stringify({ ...config, socialsMessageId: message.id }, null, 3));
+		fs.writeFile('./config.json', JSON.stringify({ ...config, socialsMessageId: message.id }, null, '	')).catch(console.error);
 		await interaction.editReply('Member list sent successfully');
 	}
 };

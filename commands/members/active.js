@@ -1,7 +1,7 @@
 export const command = {
 	data: {
 		name: 'active',
-		description: 'Makes you active'
+		description: 'Makes you active/inactive'
 	},
 	async execute(interaction) {
 		const roleManager = interaction.member.roles;
@@ -12,7 +12,9 @@ export const command = {
 			await roleManager.add(PONG_ROLE);
 			await interaction.reply('Now active again');
 		} else {
-			await interaction.reply('You are already active');
+			await roleManager.remove(PONG_ROLE);
+			await roleManager.add(TOOM_ROLE);
+			await interaction.reply('Lazy smh');
 		}
 	}
 };

@@ -1,13 +1,19 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import env from 'dotenv';
 import { Client, Intents } from 'discord.js';
 import Sequelize from 'sequelize';
-import { logDM, logBan, logUnban, logKick, logTimeout, logUntimeout, logMessageDeleted } from './loggers.js';
-import { startedStreaming, stoppedStreaming, checkStreaming, checkTempRoles } from './utilities.js';
+
+import { logDM, logBan, logUnban, logKick, logTimeout, logUntimeout } from './loggers.js';
+import { checkTempRoles } from './utilities/tempRoles.js';
+import { checkReminders } from './utilities/reminders.js';
+import { showDeletedMessage } from './utilities/deletedMessages.js';
+import { startedStreaming, stoppedStreaming, checkStreaming } from './utilities/streaming.js';
+import { handlePollVote, handlePollVoteReceived, handlePollVoteRetracted } from './utilities/polls.js';
+
 import reloadCommands from './reloadCommands.js';
 import automod from './automod.js';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+const config = JSON.parse(await fs.readFile('./config.json'));
 env.config();
 
 const sequelize = new Sequelize('database', 'user', 'password', {
@@ -16,8 +22,10 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	logging: false,
 	storage: 'database.sqlite'
 });
-sequelize.define('temprole', { memberId: Sequelize.STRING, roleId: Sequelize.STRING, endDate: Sequelize.INTEGER });
+sequelize.define('temproles', { memberId: Sequelize.STRING, roleId: Sequelize.STRING, endDate: Sequelize.INTEGER });
+sequelize.define('reminders', { message: Sequelize.STRING, endDate: Sequelize.INTEGER, date: Sequelize.INTEGER, memberId: Sequelize.STRING, channelId: Sequelize.STRING });
 sequelize.define('deleted_messages', { messageId: Sequelize.STRING, messageContent: Sequelize.TEXT, attachments: Sequelize.JSON });
+sequelize.define('polls', { pollId: Sequelize.STRING, channelId: Sequelize.STRING, question: Sequelize.STRING, options: Sequelize.JSON, votes: Sequelize.JSON });
 
 const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.DIRECT_MESSAGES],
@@ -41,9 +49,9 @@ client.once('ready', async () => {
 	client.CHANNELS = Object.fromEntries(Object.entries(config.channels).map(([key, value]) => [key, channels.find(channel => channel.name.toLowerCase() == value.toLowerCase())]));
 
 	reloadCommands(client).catch(console.error);
-	automod(client).catch(console.error);
 	checkStreaming(client).catch(console.error);
 	checkTempRoles(client).catch(console.error);
+	checkReminders(client).catch(console.error);
 });
 
 client.on('interactionCreate', async interaction => {
@@ -61,19 +69,33 @@ client.on('interactionCreate', async interaction => {
 		});
 	} else if (interaction.isButton()) {
 		if (interaction.customId.startsWith('show-deleted-message')) {
-			const DeletedMessages = interaction.client.sequelize.model('deleted_messages');
-			const deletedMessage = await DeletedMessages.findOne({ where: { messageId: interaction.customId.replace('show-deleted-message-', '') } });
-			if (deletedMessage?.messageContent) {
-				await interaction.reply({ content: deletedMessage.messageContent, files: deletedMessage.attachments, ephemeral: true, allowedMentions: { parse: [] } });
-			} else {
-				await interaction.reply({ content: "Couldn't find the message", ephemeral: true });
-			}
+			await showDeletedMessage(interaction).catch(console.error);
+		} else if (interaction.customId.startsWith('poll-vote')) {
+			await handlePollVote(interaction).catch(console.error);
+		} else if (interaction.customId.startsWith('poll-retract')) {
+			await handlePollVoteRetracted(interaction).catch(console.error);
+		}
+	} else if (interaction.isSelectMenu()) {
+		if (interaction.customId.startsWith('poll-selectoption')) {
+			await handlePollVoteReceived(interaction).catch(console.error);
+		}
+	} else if (interaction.isAutocomplete()) {
+		if (interaction.commandName == 'faq') {
+			const questions = JSON.parse(await fs.readFile('./faq.json'));
+
+			const focusedValue = interaction.options.getFocused();
+			await interaction.respond(
+				Object.keys(questions)
+					.filter(question => question.includes(focusedValue))
+					.map(question => ({ name: question, value: question }))
+			);
 		}
 	}
 });
 
 client.on('messageCreate', message => {
-	if (message.channel.type == 'DM') {
+	automod(message).catch(console.error);
+	if (message.channel.type == 'DM' && !message.author.bot) {
 		logDM(message);
 	}
 });

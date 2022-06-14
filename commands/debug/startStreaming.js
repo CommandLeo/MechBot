@@ -12,5 +12,6 @@ export const command = {
 		newPresence.activities = [{ type: 'STREAMING', state: 'Minecraft', details: 'playing the game lol', url: 'https://twitch.tv/commandleo' }];
 
 		interaction.client.emit('presenceUpdate', oldPresence, newPresence);
+		await interaction.reply('Started streaming');
 	}
 };

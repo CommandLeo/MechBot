@@ -1,5 +1,5 @@
 import { logMessageDeleted, logMemePrisoner } from '../../loggers.js';
-import { giveTempRole } from '../../utilities.js';
+import { giveTempRole } from '../../utilities/tempRoles.js';
 
 export const command = {
 	data: {

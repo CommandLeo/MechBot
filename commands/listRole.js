@@ -12,12 +12,13 @@ export const command = {
         if(role.name == '@everyone') return interaction.reply({content: 'Invalid role', ephemeral: true});
 		const data = role.members.map(member => ({ name: member.user.tag, value: member.toString(), inline: true }));
 		if (data.length > 0) {
+			const mechEmoji = interaction.client.emojis.cache.find(emoji => emoji.name == 'mechanistsSpin');
 			const embedsAmount = Math.ceil(data.length / 24);
 			const elementsAmount = Math.ceil(data.length / embedsAmount / 3) * 3;
 			const chunks = Array.from({ length: Math.min(10, embedsAmount) }, (_, i) => data.slice(elementsAmount * i, elementsAmount * (i + 1)));
 			const embeds = chunks.map((data, i) => {
 				const embed = new MessageEmbed({ color: '#3498db', fields: data });
-				if (i == 0) embed.setTitle(`<a:mechanistsSpin:973512320959533056> ${data.length} user${data.length > 1 ? 's' : ''} with role '${role.name}'`);
+				if (i == 0) embed.setTitle(`${mechEmoji} ${data.length} user${data.length > 1 ? 's' : ''} with role '${role.name}'`);
 				return embed;
 			});
 			await interaction.reply({ embeds });

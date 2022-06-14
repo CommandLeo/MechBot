@@ -1,8 +1,8 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
 import { logRoleRemoved } from '../../loggers.js';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+const config = JSON.parse(await fs.readFile('./config.json'));
 
 const textInput = new TextInputComponent({ customId: 'reason', label: 'Reason', style: 'SHORT', required: true });
 const row = new MessageActionRow({ components: [textInput] });

@@ -1,7 +1,7 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import Schedule from 'node-schedule';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+const config = JSON.parse(await fs.readFile('./config.json'));
 
 export default async function jobs(client) {
 	Schedule.scheduleJob('0 16 * * 6', () => {

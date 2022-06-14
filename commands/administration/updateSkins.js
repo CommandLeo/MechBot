@@ -1,7 +1,7 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import got from 'got';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+const config = JSON.parse(await fs.readFile('./config.json'));
 
 async function createEmojiSkin(guild, [member, { ign }]) {
 	const escapedName = member.replace(/\s+/gi, '');

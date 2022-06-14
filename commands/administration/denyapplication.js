@@ -4,21 +4,20 @@ const textInput = new TextInputComponent({ customId: 'reason', label: 'Reason', 
 const row = new MessageActionRow({ components: [textInput] });
 const modal = new Modal({ customId: 'reason-modal', title: 'Provide a reason', components: [row] });
 
+const userOptions = Array.from({ length: 24 }, (_, i) => ({ type: 'USER', name: `user-${i + 1}`, description: `User ${i + 1}`, required: i == 0 }));
+
 export const command = {
 	data: {
 		name: 'denyapplication',
 		description: 'Denies an application',
 		defaultPermission: false,
-		options: [
-			{ type: 'USER', name: 'member', description: 'The member', required: true },
-			{ type: 'STRING', name: 'reason', description: 'The reason', required: false }
-		]
+		options: [...userOptions, { type: 'STRING', name: 'reason', description: 'The reason' }]
 	},
 	async execute(interaction) {
-		const member = interaction.options.getMember('member');
+		const users = Array.from({ length: 24 }, (_, i) => interaction.options.getUser(`user-${i + 1}`)).filter(user => user?.bot == false);
 		let reason = interaction.options.getString('reason');
 
-		if (member.user.bot) return interaction.reply({ content: "Can't send the message to a bot", ephemeral: true });
+		if (!users.length) return await interaction.reply({ content: 'Invalid users', ephemeral: true });
 
 		if (!reason) {
 			await interaction.showModal(modal);
@@ -28,7 +27,8 @@ export const command = {
 			interaction = modalInteraction;
 		}
 
-		const message = await member.send(`Unfortunately your application for the Mechanists server hasn't been accepted${reason ? ':\n' + reason : ''}`).catch(() => null);
-		await interaction.reply(message ? 'Message sent' : "Couldn't send the message");
+		const results = await Promise.allSettled(users.map(async user => await user.send(`Unfortunately your application for the Mechanists server hasn't been accepted${reason ? ':\n' + reason : ''}`)));
+
+		await interaction.reply(`${results.filter(result => result.status == 'fulfilled').length}/${results.length} messages have been successfully sent`);
 	}
 };

@@ -6,13 +6,17 @@ export async function giveTempRole(member, role, duration, reason) {
 	const endDate = Date.now() + duration;
 	const temprole = await TempRoles.create({ memberId: member.id, roleId: role.id, endDate });
 
-	wait(duration).then(() => removeTempRole(member, role, temprole));
+	wait(duration).then(() => removeTempRole(member, role, endDate));
 }
 
-async function removeTempRole(member, role, temprole) {
-	await temprole.destroy();
-	await member?.roles.remove(role);
-	console.log(`[TEMP ROLE EXPIRED] Removed role ${role.name} from ${member.user.tag} (id: ${member.id}) as it expired`);
+async function removeTempRole(member, role, endDate) {
+	const TempRoles = member.client.sequelize.model('temproles');
+	const tempRole = await TempRoles.findOne({ where: { memberId: member.id, roleId: role.id, endDate } });
+	if (tempRole) {
+		await tempRole.destroy();
+		await member?.roles.remove(role);
+		console.log(`[TEMP ROLE EXPIRED] Removed role ${role.name} from ${member.user.tag} (id: ${member.id}) as it expired`);
+	}
 }
 
 export async function checkTempRoles(client) {
@@ -27,7 +31,7 @@ export async function checkTempRoles(client) {
 			const member = await guild.members.fetch(memberId);
 			const role = await guild.roles.fetch(roleId);
 			await wait(endDate - Date.now());
-			await removeTempRole(member, role, temprole);
+			await removeTempRole(member, role, endDate);
 		})
 	);
 }

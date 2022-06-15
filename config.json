@@ -1,5 +1,5 @@
 {
-	"mainGuild": "973511296450453524",
+	"mainGuild": "MAIN_GUILD_ID_HERE",
 	"memberListUrl": "https://gist.githubusercontent.com/CommandLeo/18eab00de160313607222f5fd2662735/raw/bdfad7bc3697320c10d9ec656b4b6ac59cfa0be3/mechanists_members.json",
 	"roles": {
 		"MEMBER": "Member",
@@ -37,5 +37,5 @@
 		"Tier 3 Kdender Sub",
 		"Tier 3 Desktop Sub"
 	],
-	"socialsMessageId": "984390409113468999"
+	"socialsMessageId": "SOCIALS_MESSAGE_ID"
 }

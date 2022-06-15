@@ -14,7 +14,7 @@ export const command = {
 
 			await interaction.reply(result.toString());
 		} catch {
-			await interaction.reply({ content: 'Invalid expression', ephemeral: true });
+			await interaction.reply({ content: 'Invalid expression!', ephemeral: true });
 		}
 	}
 };

@@ -12,7 +12,11 @@ export const command = {
 				type: 'SUB_COMMAND',
 				name: 'create',
 				description: 'Creates a poll',
-				options: [{ type: 'STRING', name: 'question', description: 'The question for the poll', required: true }, ...pollOptions, { type: 'ATTACHMENT', name: 'image', description: 'Image' }]
+				options: [
+					{ type: 'STRING', name: 'question', description: 'The question for the poll', required: true },
+					...pollOptions,
+					{ type: 'ATTACHMENT', name: 'image', description: 'An image for the poll' }
+				]
 			},
 			{ type: 'SUB_COMMAND', name: 'end', description: 'Ends a poll', options: [{ type: 'STRING', name: 'poll-id', description: 'The id of the poll', required: true }] },
 			{ type: 'SUB_COMMAND', name: 'results', description: 'Prints the results of a poll', options: [{ type: 'STRING', name: 'poll-id', description: 'The id of the poll', required: true }] }
@@ -60,7 +64,7 @@ export const command = {
 			const channel = await interaction.client.GUILD.channels.fetch(channelId);
 			const message = await channel?.messages.fetch(pollId);
 
-			if (!message) return await interaction.editReply('Could not find the message of the poll');
+			if (!message) return await interaction.editReply('Failed to find the message of the poll');
 
 			const buffer = await getPollResults(poll);
 			const image = new MessageAttachment(buffer, 'poll-results.png');

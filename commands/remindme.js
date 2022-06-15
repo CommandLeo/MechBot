@@ -1,4 +1,4 @@
-import { TextInputComponent, Modal, MessageActionRow, Formatters } from 'discord.js';
+import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
 import ms from 'ms';
 import { createReminder } from '../utilities/reminders.js';
 
@@ -12,7 +12,7 @@ export const command = {
 		description: 'Sets a reminder',
 		defaultPermission: false,
 		options: [
-			{ type: 'STRING', name: 'time', description: 'The amount of time you will be reminded in', required: true },
+			{ type: 'STRING', name: 'time', description: 'How much time you will be reminded in', required: true },
 			{ type: 'STRING', name: 'message', description: 'The message to remind' }
 		]
 	},
@@ -32,6 +32,6 @@ export const command = {
 
 		await createReminder(interaction.member, interaction.channel, msg, time);
 
-		await interaction.reply(`Reminder set for ${ms(time, {long: true})} from now`);
+		await interaction.reply(`Reminder set for ${ms(time, { long: true })} from now`);
 	}
 };

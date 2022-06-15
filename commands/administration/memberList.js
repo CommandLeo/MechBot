@@ -8,12 +8,11 @@ const config = JSON.parse(await fs.readFile('./config.json'));
 export const command = {
 	data: {
 		name: 'memberlist',
-		description: 'Updates the memberlist',
-		defaultPermission: false
+		description: 'Updates the member list'
 	},
 	async execute(interaction) {
 		const memberList = await got(config.memberListUrl).json();
-		const emojiManager = interaction.client.emojis; //fix
+		const emojiManager = interaction.client.emojis;
 		const infoChannel = interaction.client.CHANNELS.INFO;
 
 		await interaction.deferReply({ ephemeral: true });
@@ -50,11 +49,11 @@ export const command = {
 			const message = await infoChannel.messages.fetch(socialsMessageId).catch(() => null);
 			if (message) {
 				await message.edit({ embeds });
-				return interaction.editReply({ content: 'Member list updated successfully', ephemeral: true });
+				return interaction.editReply({ content: 'Member list successfully updated', ephemeral: true });
 			}
 		}
 		const message = await infoChannel.send({ embeds });
 		fs.writeFile('./config.json', JSON.stringify({ ...config, socialsMessageId: message.id }, null, '	')).catch(console.error);
-		await interaction.editReply('Member list sent successfully');
+		await interaction.editReply('Member list successfully sent');
 	}
 };

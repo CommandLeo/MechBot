@@ -23,7 +23,7 @@ export const command = {
 			});
 			await interaction.reply({ embeds });
 		} else {
-			await interaction.reply('There are no users with that role');
+			await interaction.reply('There are no users with that role!');
 		}
 	}
 };

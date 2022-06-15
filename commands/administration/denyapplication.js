@@ -9,15 +9,14 @@ const userOptions = Array.from({ length: 24 }, (_, i) => ({ type: 'USER', name: 
 export const command = {
 	data: {
 		name: 'denyapplication',
-		description: 'Denies an application',
-		defaultPermission: false,
-		options: [...userOptions, { type: 'STRING', name: 'reason', description: 'The reason' }]
+		description: 'Denies one or more applications',
+		options: [...userOptions, { type: 'STRING', name: 'reason', description: 'The reason to deny the applications' }]
 	},
 	async execute(interaction) {
 		const users = Array.from({ length: 24 }, (_, i) => interaction.options.getUser(`user-${i + 1}`)).filter(user => user?.bot == false);
 		let reason = interaction.options.getString('reason');
 
-		if (!users.length) return await interaction.reply({ content: 'Invalid users', ephemeral: true });
+		if (!users.length) return await interaction.reply({ content: 'Invalid users!', ephemeral: true });
 
 		if (!reason) {
 			await interaction.showModal(modal);

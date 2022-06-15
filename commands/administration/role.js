@@ -56,9 +56,9 @@ export const command = {
 		let reason = interaction.options.getString('reason');
 
 		if (role.name == '@everyone') return interaction.reply({ content: 'Invalid role', ephemeral: true });
-		if (!config.giveableRoles.includes(role.name)) return interaction.reply({ content: 'This is not a giveable role', ephemeral: true });
-		if ((subcommand == 'give' || subcommand == 'give_temp') && member.roles.cache.has(role.id)) return interaction.reply({ content: 'The user already has that role', ephemeral: true });
-		if (subcommand == 'remove' && !member.roles.cache.has(role.id)) return interaction.reply({ content: "The user doesn't have that role", ephemeral: true });
+		if (!config.giveableRoles.includes(role.name)) return interaction.reply({ content: 'This is not a giveable role!', ephemeral: true });
+		if ((subcommand == 'give' || subcommand == 'give_temp') && member.roles.cache.has(role.id)) return interaction.reply({ content: 'The user already has that role!', ephemeral: true });
+		if (subcommand == 'remove' && !member.roles.cache.has(role.id)) return interaction.reply({ content: "The user doesn't have that role!", ephemeral: true });
 
 		if (!reason) {
 			await interaction.showModal(modal);

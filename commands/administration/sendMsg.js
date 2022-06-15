@@ -10,7 +10,7 @@ export const command = {
 		description: 'Sends a message in DMs',
 		defaultPermission: false,
 		options: [
-			{ type: 'USER', name: 'user', description: 'The user to whom the message should be sent', required: true },
+			{ type: 'USER', name: 'user', description: 'The user to whom the message will be sent', required: true },
 			{ type: 'STRING', name: 'message', description: 'The message to send', required: false }
 		]
 	},
@@ -18,7 +18,7 @@ export const command = {
 		const user = interaction.options.getUser('user');
 		let msg = interaction.options.getString('message');
 
-		if (user.bot) return interaction.reply({ content: "Can't send the message to a bot", ephemeral: true });
+		if (user.bot) return interaction.reply({ content: "Can't send the message to a bot!", ephemeral: true });
 
 		if (!msg) {
 			await interaction.showModal(modal);
@@ -29,7 +29,7 @@ export const command = {
 		}
 
 		const message = await user.send(msg).catch(() => null);
-		if (!message) return await interaction.reply("Couldn't send the message");
-		await interaction.reply({content: 'Message sent', ephemeral: true});
+		if (!message) return await interaction.reply('Failed to send the message');
+		await interaction.reply({ content: 'Message sent', ephemeral: true });
 	}
 };

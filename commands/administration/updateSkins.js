@@ -12,7 +12,7 @@ async function createEmojiSkin(guild, [member, { ign }]) {
 export const command = {
 	data: {
 		name: 'updateskins',
-		description: 'Updates the skins',
+		description: 'Updates skins',
 		defaultPermission: false,
 		options: [{ type: 'USER', name: 'member', description: 'The member to whom to update the skin', required: false }]
 	},
@@ -55,7 +55,7 @@ export const command = {
 			const updateSkinPromises = memberData.map((data, i) => createEmojiSkin(guilds[Math.floor(i / 50)], data));
 			await Promise.all(updateSkinPromises);
 			console.log('Finished updating skins');
-			await interaction.editReply('Updated skins');
+			await interaction.editReply('Successfully pdated skins');
 		}
 	}
 };

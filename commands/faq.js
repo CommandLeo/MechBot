@@ -4,7 +4,7 @@ export const command = {
 	data: {
 		name: 'faq',
 		description: 'FAQ',
-		options: [{ type: 'STRING', name: 'question', description: 'The question', autocomplete: true, required: true }]
+		options: [{ type: 'STRING', name: 'question', description: 'The question to answer', autocomplete: true, required: true }]
 	},
 	async execute(interaction) {
 		const questions = JSON.parse(await fs.readFile('./faq.json'));

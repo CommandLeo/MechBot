@@ -4,6 +4,6 @@ export async function showDeletedMessage(interaction) {
 	if (deletedMessage?.messageContent) {
 		await interaction.reply({ content: deletedMessage.messageContent, files: deletedMessage.attachments, ephemeral: true, allowedMentions: { parse: [] } });
 	} else {
-		await interaction.reply({ content: "Couldn't find the message", ephemeral: true });
+		await interaction.reply({ content: 'Failed to find the message', ephemeral: true });
 	}
 }

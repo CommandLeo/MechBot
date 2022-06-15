@@ -49,7 +49,7 @@ export const command = {
 
 		if (subCommand == 'set') {
 			const index = interaction.options.getInteger('index');
-			if (index > botActivities.length) return await interaction.reply({ content: 'Invalid index', ephemeral: true });
+			if (index > botActivities.length) return await interaction.reply({ content: 'Invalid index!', ephemeral: true });
 			const activity = index ? botActivities[index - 1] : botActivities[Math.floor(Math.random() * botActivities.length)];
 
 			await interaction.client.user.setActivity(activity);
@@ -64,10 +64,10 @@ export const command = {
 
 			botActivities.push({ type, name });
 			fs.writeFile('./activities.json', JSON.stringify(botActivities, null, '	')).catch(console.error);
-			await interaction.reply('Successfully created activity');
+			await interaction.reply('Successfully created the activity');
 		} else if (subCommand == 'delete') {
 			const index = interaction.options.getInteger('index');
-			if (index > botActivities.length) return await interaction.reply({ content: 'Invalid index', ephemeral: true });
+			if (index > botActivities.length) return await interaction.reply({ content: 'Invalid index!', ephemeral: true });
 
 			botActivities.splice(index - 1, 1);
 			fs.writeFile('./activities.json', JSON.stringify(botActivities, null, '	')).catch(console.error);

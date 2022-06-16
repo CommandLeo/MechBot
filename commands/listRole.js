@@ -9,8 +9,9 @@ export const command = {
 	},
 	async execute(interaction) {
 		const role = interaction.options.getRole('role');
-        if(role.name == '@everyone') return interaction.reply({content: 'Invalid role', ephemeral: true});
-		const data = role.members.map(member => ({ name: member.user.tag, value: member.toString(), inline: true }));
+		if (role.name == '@everyone') return interaction.reply({ content: 'Invalid role', ephemeral: true });
+		const members = role.members.sort((member1, member2) => member1.user.username.localeCompare(member2.user.username));
+		const data = members.map(member => ({ name: member.user.tag, value: member.toString(), inline: true }));
 		if (data.length > 0) {
 			const mechEmoji = interaction.client.emojis.cache.find(emoji => emoji.name == 'mechanistsSpin');
 			const embedsAmount = Math.ceil(data.length / 24);

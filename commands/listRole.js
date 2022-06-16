@@ -16,8 +16,8 @@ export const command = {
 			const embedsAmount = Math.ceil(data.length / 24);
 			const elementsAmount = Math.ceil(data.length / embedsAmount / 3) * 3;
 			const chunks = Array.from({ length: Math.min(10, embedsAmount) }, (_, i) => data.slice(elementsAmount * i, elementsAmount * (i + 1)));
-			const embeds = chunks.map((data, i) => {
-				const embed = new MessageEmbed({ color: '#3498db', fields: data });
+			const embeds = chunks.map((fields, i) => {
+				const embed = new MessageEmbed({ color: '#3498db', fields });
 				if (i == 0) embed.setTitle(`${mechEmoji} ${data.length} user${data.length > 1 ? 's' : ''} with role '${role.name}'`);
 				return embed;
 			});

@@ -1,0 +1,39 @@
+{
+	"memberListUrl": "https://gist.githubusercontent.com/CommandLeo/18eab00de160313607222f5fd2662735/raw/bdfad7bc3697320c10d9ec656b4b6ac59cfa0be3/mechanists_members.json",
+	"roles": {
+		"MEMBER": "Member",
+		"TOOM": "Temporarily Out Of Order Member",
+		"PONG": "Pong",
+		"ADMIN": "Admin",
+		"STAFF": "Staff",
+		"BOARD": "Board",
+		"BIG_BRAIN": "Big Brain",
+		"CMP_ACCESS": "CMP Access",
+		"MUTED": "Muted",
+		"MEME_PRISONER": "Meme Prisoner",
+		"STREAMING": "Streaming!",
+		"SUPPORTER": "Supporter",
+		"SUPPORTER_LVL2": "Supporter Lvl 2"
+	},
+	"channels": {
+		"LOG": "mod-log",
+		"BOT_SPAM": "bot-spam",
+		"BOARD": "🛹board",
+		"INFO": "📋server-info",
+		"STREAM_ANNOUNCEMENTS": "stream-announcements",
+		"MEMES": "🥫memes"
+	},
+	"giveableRoles": ["Big Brain", "CMP Access", "Muted", "Meme Prisoner"],
+	"supporterRoles": ["Nitro Booster", "Cuber Sub", "Ajvejs Sub", "Kdender Sub", "Kdender Patreon"],
+	"supporterLvl2Roles": [
+		"Kdender Patreon LvL 2",
+		"Tier 2 Cuber Sub",
+		"Tier 2 Ajvej Sub",
+		"Tier 2 Kdender Sub",
+		"Tier 2 Desktop Sub",
+		"Tier 3 Cuber Sub",
+		"Tier 3 Ajvej Sub",
+		"Tier 3 Kdender Sub",
+		"Tier 3 Desktop Sub"
+	]
+}

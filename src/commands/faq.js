@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import {FAQ, readJson} from "../io.js";
 
 export const command = {
 	data: {
@@ -7,7 +7,7 @@ export const command = {
 		options: [{ type: 'STRING', name: 'question', description: 'The question to answer', autocomplete: true, required: true }]
 	},
 	async execute(interaction) {
-		const questions = JSON.parse(await fs.readFile('./data/faq.json'));
+		const questions = readJson(FAQ)
 
 		const question = interaction.options.getString('question');
 		await interaction.reply(questions[question]);

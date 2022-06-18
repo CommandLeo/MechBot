@@ -1,8 +1,9 @@
 import { Formatters } from 'discord.js';
 import fs from 'fs/promises';
 import {client} from "../../index.js";
+import {ACTIVITIES, readJson} from "../../io.js";
 
-const BOT_ACTIVITIES = JSON.parse((await fs.readFile('./data/activities.json')).toString())
+const BOT_ACTIVITIES = readJson(ACTIVITIES)
 
 export const command = {
 	data: {

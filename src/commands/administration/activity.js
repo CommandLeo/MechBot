@@ -86,13 +86,10 @@ export const command = {
 };
 
 function printActivities() {
-	let maxes = BOT_ACTIVITIES.reduce( (acc, cur, i) => {
-		acc.type = Math.max(acc.type || 0, cur.type.length);
-		acc.index = Math.max(acc.index || 0, `${i + 1}`.length);
-		return acc;
-	}, { type: 0, index: 0 });
+	const maxActivityTypeLength = Math.max(...BOT_ACTIVITIES.map(activity => activity.type.length));
+	const activitiesLength = BOT_ACTIVITIES.length.toString().length;
 
 	return BOT_ACTIVITIES.map( (activity, i) => {
-		return `${(i + 1).toString().padStart(maxes.index, ' ')}) ${activity.type.padEnd(maxes.type, ' ')} | ${activity.name}`;
+		return `${(i + 1).toString().padStart(activitiesLength)}) ${activity.type.padEnd(maxActivityTypeLength)} | ${activity.name}`;
 	}).join('\n');
 }

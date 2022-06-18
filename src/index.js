@@ -105,7 +105,7 @@ client.on('presenceUpdate', (oldPresence, newPresence) => {
 	const MEMBER_ROLE = client.ROLES.MEMBER;
 	const STREAMING_ROLE = client.ROLES.STREAMING;
 
-	if (!member || member.user.bot) return;
+	if (!newPresence.user?.bot) return;
 	if (newPresence.guild.id !== client.GUILD.id) return;
 	if (!member.roles.cache.has(MEMBER_ROLE.id)) return;
 

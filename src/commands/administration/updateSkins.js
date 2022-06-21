@@ -53,7 +53,7 @@ export const command = {
 			const updateSkinPromises = memberData.map((data, i) => createEmojiSkin(guilds[Math.floor(i / 50)], data));
 			await Promise.all(updateSkinPromises);
 			console.log('Finished updating skins');
-			await interaction.editReply('Successfully pdated skins');
+			await interaction.editReply('Successfully updated skins');
 		}
 	}
 };

@@ -1,11 +1,10 @@
 import { Presence } from 'discord.js';
-import {client} from "../../index.js";
+import { client } from '../../index.js';
 
 export const command = {
 	data: {
 		name: 'startstreaming',
-		description: 'Simulates a member starting to stream',
-		defaultPermission: false
+		description: 'Simulates a member starting to stream'
 	},
 	async execute(interaction) {
 		const oldPresence = interaction.member.presence;

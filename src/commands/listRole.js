@@ -1,10 +1,10 @@
 import { MessageEmbed } from 'discord.js';
+import { client } from '../index.js';
 
 export const command = {
 	data: {
 		name: 'listrole',
 		description: 'Lists users that have a certain role',
-		defaultPermission: false,
 		options: [{ type: 'ROLE', name: 'role', description: 'The role of which to list the users', required: true }]
 	},
 	async execute(interaction) {
@@ -13,7 +13,7 @@ export const command = {
 		const members = role.members.sort((member1, member2) => member1.user.username.localeCompare(member2.user.username));
 		const data = members.map(member => ({ name: member.user.tag, value: member.toString(), inline: true }));
 		if (data.length > 0) {
-			const mechEmoji = interaction.client.emojis.cache.find(emoji => emoji.name === 'mechanistsSpin');
+			const mechEmoji = client.emojis.cache.find(emoji => emoji.name === 'mechanistsSpin');
 			const embedsAmount = Math.ceil(data.length / 24);
 			const elementsAmount = Math.ceil(data.length / embedsAmount / 3) * 3;
 			const chunks = Array.from({ length: Math.min(10, embedsAmount) }, (_, i) => data.slice(elementsAmount * i, elementsAmount * (i + 1)));

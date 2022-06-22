@@ -1,4 +1,4 @@
-import {client} from "../index.js";
+import { client } from '../index.js';
 
 export async function showDeletedMessage(interaction) {
 	const DeletedMessages = client.sequelize.model('deleted_messages');

@@ -1,6 +1,6 @@
 import { MessageActionRow, MessageSelectMenu } from 'discord.js';
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-import {client} from "../index.js";
+import { client } from '../index.js';
 
 export async function handlePollVote(interaction) {
 	await interaction.deferReply({ ephemeral: true });
@@ -46,7 +46,6 @@ export async function handlePollVoteRetracted(interaction) {
 }
 
 export async function getPollResults(poll) {
-
 	const { options, question, votes } = poll;
 
 	const counts = Object.values(votes).reduce((acc, val) => ({ ...acc, [val]: (acc[val] || 0) + 1 }), {});

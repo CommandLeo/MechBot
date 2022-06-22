@@ -1,5 +1,5 @@
-import env from "dotenv";
-import {existsSync, readFileSync, writeFile} from "fs";
+import env from 'dotenv';
+import { existsSync, readFileSync, writeFile } from 'fs';
 
 const ROOT = process.cwd();
 
@@ -10,11 +10,11 @@ const ACTIVITIES = `${ROOT}/data/activities.json`;
 const CONFIG = `${ROOT}/config.json`;
 
 // Load the .env file
-env.config()
+env.config();
 
 function readJson(path) {
 	if (!existsSync(path)) {
-		console.error("File not found:", path);
+		console.error('File not found:', path);
 		process.exit(1);
 	}
 	return JSON.parse(readFileSync(path).toString());
@@ -22,10 +22,12 @@ function readJson(path) {
 
 function writeJson(path, data) {
 	if (!existsSync(path)) {
-		console.error("File not found:", path);
+		console.error('File not found:', path);
 		process.exit(1);
 	}
-	writeFile(path, data, (error) => console.log(error));
+	writeFile(path, data, error => {
+		if (error) console.error(error);
+	});
 }
 
-export { MECHANIST_PATH, FAQ, ACTIVITIES, CONFIG, readJson, writeJson};
+export { MECHANIST_PATH, FAQ, ACTIVITIES, CONFIG, readJson, writeJson };

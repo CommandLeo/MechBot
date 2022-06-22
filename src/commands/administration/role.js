@@ -1,8 +1,8 @@
-import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
 import ms from 'ms';
+import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
 import { giveTempRole } from '../../utilities/tempRoles.js';
 import { logRoleGiven, logTempRoleGiven, logRoleRemoved } from '../../loggers.js';
-import {client, MECHANIST_DATA} from "../../index.js";
+import { client, MECHANIST_DATA } from '../../index.js';
 
 const textInput = new TextInputComponent({ customId: 'reason', label: 'Reason', style: 'SHORT', required: true });
 const row = new MessageActionRow({ components: [textInput] });
@@ -12,7 +12,6 @@ export const command = {
 	data: {
 		name: 'role',
 		description: 'Manages the roles of a user',
-		defaultPermission: false,
 		options: [
 			{
 				type: 'SUB_COMMAND',
@@ -21,7 +20,7 @@ export const command = {
 				options: [
 					{ type: 'USER', name: 'member', description: 'The member to whom to give the role', required: true },
 					{ type: 'ROLE', name: 'role', description: 'The role to give', required: true },
-					{ type: 'STRING', name: 'reason', description: 'The reason for giving the role', required: false }
+					{ type: 'STRING', name: 'reason', description: 'The reason for giving the role' }
 				]
 			},
 			{
@@ -32,7 +31,7 @@ export const command = {
 					{ type: 'USER', name: 'member', description: 'The member to whom to give the role', required: true },
 					{ type: 'ROLE', name: 'role', description: 'The role to give', required: true },
 					{ type: 'STRING', name: 'duration', description: 'How long to give the role for', required: true },
-					{ type: 'STRING', name: 'reason', description: 'The reason for giving the role', required: false }
+					{ type: 'STRING', name: 'reason', description: 'The reason for giving the role' }
 				]
 			},
 			{
@@ -42,7 +41,7 @@ export const command = {
 				options: [
 					{ type: 'USER', name: 'member', description: 'The member to remove the role from', required: true },
 					{ type: 'ROLE', name: 'role', description: 'The role to remove', required: true },
-					{ type: 'STRING', name: 'reason', description: 'The reason for removing the role', required: false }
+					{ type: 'STRING', name: 'reason', description: 'The reason for removing the role' }
 				]
 			}
 		]

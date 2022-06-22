@@ -1,4 +1,4 @@
-import {client} from "./index.js";
+import { client } from './index.js';
 
 const urlRegex = /((\w+:\/\/)[-a-zA-Z0-9:@;?&=\/%\+\.\*!'\(\),\$_\{\}\^~\[\]`#|]+)/;
 

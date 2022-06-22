@@ -1,5 +1,5 @@
 import { Formatters } from 'discord.js';
-import {client} from "../index.js";
+import { client } from '../index.js';
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function createReminder(member, channel, msg, time) {
@@ -28,8 +28,8 @@ export async function checkReminders(client) {
 			const { message, endDate, date, memberId, channelId } = reminder;
 			const member = await guild.members.fetch(memberId);
 			const channel = await guild.channels.fetch(channelId);
-            await wait(endDate - Date.now())
-            await remind(member, channel, message, date, reminder)
+			await wait(endDate - Date.now());
+			await remind(member, channel, message, date, reminder);
 		})
 	);
 }

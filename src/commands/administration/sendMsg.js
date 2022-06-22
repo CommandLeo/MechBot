@@ -8,10 +8,9 @@ export const command = {
 	data: {
 		name: 'sendmsg',
 		description: 'Sends a message in DMs',
-		defaultPermission: false,
 		options: [
 			{ type: 'USER', name: 'user', description: 'The user to whom the message will be sent', required: true },
-			{ type: 'STRING', name: 'message', description: 'The message to send', required: false }
+			{ type: 'STRING', name: 'message', description: 'The message to send' }
 		]
 	},
 	async execute(interaction) {

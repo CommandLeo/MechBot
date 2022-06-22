@@ -1,4 +1,4 @@
-import {client} from "../index.js";
+import { client } from '../index.js';
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 

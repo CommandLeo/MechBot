@@ -10,7 +10,6 @@ export const command = {
 	data: {
 		name: 'remindme',
 		description: 'Sets a reminder',
-		defaultPermission: false,
 		options: [
 			{ type: 'STRING', name: 'time', description: 'How much time you will be reminded in', required: true },
 			{ type: 'STRING', name: 'message', description: 'The message to remind' }

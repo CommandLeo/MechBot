@@ -1,6 +1,6 @@
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
 import ms from 'ms';
-import {client} from "./index.js";
+import { client } from './index.js';
 
 const COLORS = {
 	RED: '#e74c3c',

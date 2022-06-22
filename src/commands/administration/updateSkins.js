@@ -1,5 +1,5 @@
 import got from 'got';
-import {client, MECHANIST_DATA} from "../../index.js";
+import { client, MECHANIST_DATA } from '../../index.js';
 
 async function createEmojiSkin(guild, [member, { ign }]) {
 	const escapedName = member.replace(/\s+/gi, '');
@@ -11,8 +11,7 @@ export const command = {
 	data: {
 		name: 'updateskins',
 		description: 'Updates skins',
-		defaultPermission: false,
-		options: [{ type: 'USER', name: 'member', description: 'The member to whom to update the skin', required: false }]
+		options: [{ type: 'USER', name: 'member', description: 'The member to whom to update the skin' }]
 	},
 	async execute(interaction) {
 		const member = interaction.options.getUser('member');

@@ -1,4 +1,4 @@
-import {Sequelize} from "sequelize";
+import { Sequelize } from 'sequelize';
 
 const sqlClient = new Sequelize('database', 'user', 'password', {
 	host: 'localhost',
@@ -7,7 +7,7 @@ const sqlClient = new Sequelize('database', 'user', 'password', {
 	storage: 'database.sqlite'
 });
 
-sqlClient.define('temproles', {memberId: Sequelize.STRING, roleId: Sequelize.STRING, endDate: Sequelize.INTEGER});
+sqlClient.define('temproles', { memberId: Sequelize.STRING, roleId: Sequelize.STRING, endDate: Sequelize.INTEGER });
 
 sqlClient.define('reminders', {
 	message: Sequelize.STRING,
@@ -31,4 +31,4 @@ sqlClient.define('polls', {
 	votes: Sequelize.JSON
 });
 
-export {sqlClient}
+export { sqlClient };

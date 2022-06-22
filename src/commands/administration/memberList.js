@@ -1,8 +1,7 @@
-import fs from 'fs/promises';
 import got from 'got';
-import {Formatters, MessageEmbed} from 'discord.js';
-import {client, config, MECHANIST_DATA} from "../../index.js";
-import {MECHANIST_PATH, writeJson} from "../../io.js";
+import { Formatters, MessageEmbed } from 'discord.js';
+import { client, config, MECHANIST_DATA } from '../../index.js';
+import { MECHANIST_PATH, writeJson } from '../../io.js';
 
 export const command = {
 	data: {
@@ -52,7 +51,7 @@ export const command = {
 			}
 		}
 		const message = await infoChannel.send({ embeds });
-		writeJson(MECHANIST_PATH, JSON.stringify({ ...MECHANIST_DATA, socialsMessageId: message.id }, null, '	'))
+		writeJson(MECHANIST_PATH, JSON.stringify({ ...MECHANIST_DATA, socialsMessageId: message.id }, null, '	'));
 		await interaction.editReply('Member list successfully sent');
 	}
 };

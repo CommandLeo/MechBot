@@ -1,19 +1,19 @@
-import {Client, Intents} from 'discord.js';
+import { Client, Intents } from 'discord.js';
 
-import {logBan, logDM, logKick, logTimeout, logUnban, logUntimeout} from './loggers.js';
-import {checkTempRoles} from './utilities/tempRoles.js';
-import {checkReminders} from './utilities/reminders.js';
-import {showDeletedMessage} from './utilities/deletedMessages.js';
-import {checkStreaming, startedStreaming, stoppedStreaming} from './utilities/streaming.js';
-import {handlePollVote, handlePollVoteReceived, handlePollVoteRetracted} from './utilities/polls.js';
+import { logBan, logDM, logKick, logTimeout, logUnban, logUntimeout } from './loggers.js';
+import { checkTempRoles } from './utilities/tempRoles.js';
+import { checkReminders } from './utilities/reminders.js';
+import { showDeletedMessage } from './utilities/deletedMessages.js';
+import { checkStreaming, startedStreaming, stoppedStreaming } from './utilities/streaming.js';
+import { handlePollVote, handlePollVoteReceived, handlePollVoteRetracted } from './utilities/polls.js';
 
 import reloadCommands from './reloadCommands.js';
 import automod from './automod.js';
-import {CONFIG, FAQ, MECHANIST_PATH, readJson} from "./io.js";
-import {sqlClient} from "./database.js";
+import { CONFIG, FAQ, MECHANIST_PATH, readJson } from './io.js';
+import { sqlClient } from './database.js';
 
-export const MECHANIST_DATA = readJson(MECHANIST_PATH)
-export const config = readJson(CONFIG)
+export const MECHANIST_DATA = readJson(MECHANIST_PATH);
+export const config = readJson(CONFIG);
 
 export const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.DIRECT_MESSAGES],
@@ -27,7 +27,7 @@ client.once('ready', async () => {
 	Object.values(sqlClient.models).forEach(model => model.sync());
 
 	const guilds = await client.guilds.fetch();
-	client.GUILD = await guilds.find(guild => guild.id === config["guild-id"])?.fetch();
+	client.GUILD = await guilds.find(guild => guild.id === config['guild-id'])?.fetch();
 
 	if (!client.GUILD) {
 		console.error('Could not find guild!');
@@ -35,18 +35,10 @@ client.once('ready', async () => {
 	}
 
 	const roles = await client.GUILD.roles.fetch();
-	client.ROLES = Object.fromEntries(
-		Object
-			.entries(MECHANIST_DATA.roles)
-			.map(([key, value]) => [key, roles.find(role => role.name.toLowerCase() === value.toLowerCase())])
-	);
+	client.ROLES = Object.fromEntries(Object.entries(MECHANIST_DATA.roles).map(([key, value]) => [key, roles.find(role => role.name.toLowerCase() === value.toLowerCase())]));
 
 	const channels = await client.GUILD.channels.fetch();
-	client.CHANNELS = Object.fromEntries(
-		Object.entries(MECHANIST_DATA.channels).map(
-			([key, value]) => [key, channels.find(channel => channel.name.toLowerCase() === value.toLowerCase())]
-		)
-	);
+	client.CHANNELS = Object.fromEntries(Object.entries(MECHANIST_DATA.channels).map(([key, value]) => [key, channels.find(channel => channel.name.toLowerCase() === value.toLowerCase())]));
 
 	reloadCommands(client).catch(console.error);
 	checkStreaming(client).catch(console.error);
@@ -60,7 +52,7 @@ client.on('interactionCreate', async interaction => {
 		if (!command) return;
 		command.execute(interaction).catch(error => {
 			console.error(error);
-			const data = {content: 'There was an error while executing this command', ephemeral: true};
+			const data = { content: 'There was an error while executing this command', ephemeral: true };
 			if (interaction.replied || interaction.deferred) {
 				interaction.editReply(data);
 			} else {
@@ -87,7 +79,7 @@ client.on('interactionCreate', async interaction => {
 			await interaction.respond(
 				Object.keys(questions)
 					.filter(question => question.includes(focusedValue))
-					.map(question => ({name: question, value: question}))
+					.map(question => ({ name: question, value: question }))
 			);
 		}
 	}
@@ -105,9 +97,9 @@ client.on('presenceUpdate', (oldPresence, newPresence) => {
 	const MEMBER_ROLE = client.ROLES.MEMBER;
 	const STREAMING_ROLE = client.ROLES.STREAMING;
 
-	if (!newPresence.user?.bot) return;
-	if (newPresence.guild.id !== client.GUILD.id) return;
-	if (!member.roles.cache.has(MEMBER_ROLE.id)) return;
+	if (newPresence.user?.bot != false) return;
+	if (newPresence?.guild.id !== client.GUILD.id) return;
+	if (!member?.roles.cache.has(MEMBER_ROLE.id)) return;
 
 	const hasStreamingRole = member.roles.cache.has(STREAMING_ROLE.id);
 	const activity = newPresence.activities?.find(activity => activity.type === 'STREAMING');
@@ -132,16 +124,14 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 	const newTimestamp = newMember.communicationDisabledUntilTimestamp;
 
 	if (!oldTimeStamp && newTimestamp) {
-		const log = fetchedLog.entries.first();
-		const {executor, target, reason, changes} = log || {};
+		const { executor, target, reason, changes } = fetchedLog.entries.first() || {};
 		if (target.id === newMember.id && changes?.some(change => change.key === 'communication_disabled_until' && !change.old && change.new)) {
 			logTimeout(newMember, newTimestamp, executor, reason);
 		} else {
 			logTimeout(newMember, newTimestamp);
 		}
 	} else if (oldTimeStamp && !newTimestamp) {
-		const log = fetchedLog.entries.first();
-		const {executor, target, reason, changes} = log || {};
+		const { executor, target, reason, changes } = fetchedLog.entries.first() || {};
 		if (target.id === newMember.id && changes?.some(change => change.key === 'communication_disabled_until' && change.old && !change.new)) {
 			logUntimeout(newMember, executor, reason);
 		} else {
@@ -167,7 +157,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 		if (newMember.roles.cache.some(role => role.name.includes('whitelist'))) {
 			client.CHANNELS.BOT_SPAM.send({
 				content: `${newMember} (id: ${newMember.id}) lost their supporter role. Whitelist needs to be removed`,
-				allowedMentions: {parse: []}
+				allowedMentions: { parse: [] }
 			});
 		}
 	}
@@ -180,7 +170,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 		if (newMember.roles.cache.some(role => role.name.includes('whitelist') && role.name.includes('2'))) {
 			client.CHANNELS.BOT_SPAM.send({
 				content: `${newMember} (id: ${newMember.id}) lost their supporter lvl 2 role. Lvl 2 whitelist needs to be removed`,
-				allowedMentions: {parse: []}
+				allowedMentions: { parse: [] }
 			});
 		}
 	}
@@ -202,7 +192,7 @@ client.on('guildMemberRemove', async member => {
 	if (roles.some(role => role.name.includes('whitelist'))) {
 		client.CHANNELS.BOT_SPAM.send({
 			content: `${member} (id: ${member.id}) left the server with a whitelist role`,
-			allowedMentions: {parse: []}
+			allowedMentions: { parse: [] }
 		});
 	}
 
@@ -217,7 +207,7 @@ client.on('guildMemberRemove', async member => {
 
 	if (!kickLog || kickLog.createdAt < member.joinedAt) return console.log(`[LEAVE] ${member.user.tag} (id: ${member.id}) left the server`);
 
-	const {executor, target, reason} = kickLog;
+	const { executor, target, reason } = kickLog;
 
 	if (target.id === member.id) {
 		logKick(target, executor, reason);
@@ -236,8 +226,7 @@ client.on('guildBanAdd', async ban => {
 		type: 'MEMBER_BAN_ADD'
 	});
 
-	const banLog = fetchedLog.entries.first();
-	const {executor, target, reason} = banLog || {};
+	const { executor, target, reason } = fetchedLog.entries.first() || {};
 	if (target.id === ban.user.id) {
 		logBan(ban.user, executor, reason);
 	} else {
@@ -255,8 +244,7 @@ client.on('guildBanRemove', async ban => {
 		type: 'MEMBER_BAN_REMOVE'
 	});
 
-	const unbanLog = fetchedLog.entries.first();
-	const {executor, target, reason} = unbanLog || {};
+	const { executor, target, reason } = fetchedLog.entries.first() || {};
 	if (target.id === ban.user.id) {
 		logUnban(ban.user, executor, reason);
 	} else {

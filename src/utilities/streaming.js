@@ -1,4 +1,4 @@
-import {client} from "../index.js";
+import { client } from '../index.js';
 
 export async function startedStreaming(member, activity) {
 	const STREAMING_ROLE = client.ROLES.STREAMING;

@@ -1,5 +1,8 @@
 import Schedule from 'node-schedule';
-import {client, MECHANIST_DATA} from "./index.js";
+import {client} from "./index.js";
+import {ACTIVITIES, readJson} from "../../io.js";
+
+const BOT_ACTIVITIES = readJson(ACTIVITIES);
 
 export default async function jobs() {
 	Schedule.scheduleJob('0 16 * * 6', () => {
@@ -17,7 +20,7 @@ export default async function jobs() {
 	});
 
 	Schedule.scheduleJob('0 0 * * *', () => {
-		const presence = MECHANIST_DATA.botPresences[Math.floor(Math.random() * botPresences.length)];
-		client.user.setPresence(presence);
+		const activity = BOT_ACTIVITIES[Math.floor(Math.random() * BOT_ACTIVITIES.length)];
+		client.user.setActivity(activity);
 	});
 }

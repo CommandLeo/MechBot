@@ -13,7 +13,7 @@ import {CONFIG, FAQ, MECHANIST_PATH, readJson} from "./io.js";
 import {sqlClient} from "./database.js";
 
 export const MECHANIST_DATA = readJson(MECHANIST_PATH)
-const config = readJson(CONFIG)
+export const config = readJson(CONFIG)
 
 export const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.DIRECT_MESSAGES],

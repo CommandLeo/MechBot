@@ -1,7 +1,6 @@
 import { Formatters } from 'discord.js';
-import fs from 'fs/promises';
 import {client} from "../../index.js";
-import {ACTIVITIES, readJson} from "../../io.js";
+import {ACTIVITIES, readJson, writeJson} from "../../io.js";
 
 const BOT_ACTIVITIES = readJson(ACTIVITIES)
 
@@ -70,7 +69,7 @@ export const command = {
 			const name = interaction.options.getString('name');
 
 			BOT_ACTIVITIES.push({ type, name });
-			fs.writeFile('./data/activities.json', JSON.stringify(BOT_ACTIVITIES, null, '	')).catch(console.error);
+			writeJson(ACTIVITIES, JSON.stringify(BOT_ACTIVITIES, null, '	'));
 			await interaction.reply('Successfully created the activity');
 
 		} else if (subCommand === 'delete') {
@@ -79,7 +78,7 @@ export const command = {
 			if (index > BOT_ACTIVITIES.length) return await interaction.reply({ content: 'Invalid index!', ephemeral: true });
 
 			BOT_ACTIVITIES.splice(index - 1, 1);
-			fs.writeFile('./data/activities.json', JSON.stringify(BOT_ACTIVITIES, null, '	')).catch(console.error);
+			writeJson(ACTIVITIES, JSON.stringify(BOT_ACTIVITIES, null, '	'));
 			await interaction.reply(`Successfully deleted activity ${index}`);
 		}
 	}

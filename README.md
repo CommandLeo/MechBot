@@ -1,6 +1,6 @@
 # MechBot
 
-A discord bot for mechanists technical minecraft server.
+A discord bot for the Mechanists technical Minecraft server.
 
 ## How to run
 
@@ -10,3 +10,5 @@ A discord bot for mechanists technical minecraft server.
 - Fill in the fields in the `config.json` file
 - Run `npm install`
 - Run `npm start`
+
+**Important**: turn on all the privileged gateway intents on the bot's page in the Discord Developers Portal.

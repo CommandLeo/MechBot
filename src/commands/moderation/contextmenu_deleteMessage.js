@@ -11,8 +11,8 @@ export const command = {
 		const message = await interaction.channel.messages.fetch(interaction.targetId);
 		await message.delete().catch(() => console.error(`Failed to context-menu delete a message in #${message.channel.name}`));
 
-		const deletedMessages = client.sequelize.model('deleted_messages');
-		await deletedMessages.create({
+		const DeletedMessages = client.sequelize.model('deleted_messages');
+		await DeletedMessages.create({
 			messageId: message.id,
 			messageContent: message.content,
 			attachments: message.attachments.map(attachment => attachment.url)

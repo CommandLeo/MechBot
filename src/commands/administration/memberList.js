@@ -1,7 +1,8 @@
 import fs from 'fs/promises';
 import got from 'got';
 import {Formatters, MessageEmbed} from 'discord.js';
-import {client, MECHANIST_DATA} from "../../index.js";
+import {client, config, MECHANIST_DATA} from "../../index.js";
+import {MECHANIST_PATH, writeJson} from "../../io.js";
 
 export const command = {
 	data: {
@@ -42,8 +43,8 @@ export const command = {
 			return embed;
 		});
 
-		if (MECHANIST_DATA.socialsMessageId) {
-			const socialsMessageId = MECHANIST_DATA.socialsMessageId || '';
+		if (config['socials-message-id']) {
+			const socialsMessageId = config['socials-message-id'] || '';
 			const message = await infoChannel.messages.fetch(socialsMessageId).catch(() => null);
 			if (message) {
 				await message.edit({ embeds });
@@ -51,7 +52,7 @@ export const command = {
 			}
 		}
 		const message = await infoChannel.send({ embeds });
-		fs.writeFile('./data/mechanists.json', JSON.stringify({ ...MECHANIST_DATA, socialsMessageId: message.id }, null, '	')).catch(console.error);
+		writeJson(MECHANIST_PATH, JSON.stringify({ ...MECHANIST_DATA, socialsMessageId: message.id }, null, '	'))
 		await interaction.editReply('Member list successfully sent');
 	}
 };

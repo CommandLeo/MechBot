@@ -1,5 +1,5 @@
 import env from "dotenv";
-import {existsSync, readFileSync} from "fs";
+import {existsSync, readFileSync, writeFile} from "fs";
 
 const ROOT = process.cwd();
 
@@ -20,4 +20,12 @@ function readJson(path) {
 	return JSON.parse(readFileSync(path).toString());
 }
 
-export { MECHANIST_PATH, FAQ, ACTIVITIES, CONFIG, readJson };
+function writeJson(path, data) {
+	if (!existsSync(path)) {
+		console.error("File not found:", path);
+		process.exit(1);
+	}
+	writeFile(path, data, (error) => console.log(error));
+}
+
+export { MECHANIST_PATH, FAQ, ACTIVITIES, CONFIG, readJson, writeJson};

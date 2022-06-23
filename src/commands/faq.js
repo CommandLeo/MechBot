@@ -7,9 +7,11 @@ export const command = {
 		options: [{ type: 'STRING', name: 'question', description: 'The question to answer', autocomplete: true, required: true }]
 	},
 	async execute(interaction) {
-		const questions = readJson(FAQ);
+		const data = readJson(FAQ);
 
 		const question = interaction.options.getString('question');
-		await interaction.reply(questions[question]);
+		const answer = data[question];
+
+		await interaction.reply(answer || { content: 'Invalid question', ephemeral: true });
 	}
 };

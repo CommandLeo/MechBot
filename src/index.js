@@ -78,7 +78,7 @@ client.on('interactionCreate', async interaction => {
 			const focusedValue = interaction.options.getFocused();
 			await interaction.respond(
 				Object.keys(questions)
-					.filter(question => question.includes(focusedValue))
+					.filter(question => question.toLowerCase().includes(focusedValue.toLowerCase()))
 					.map(question => ({ name: question, value: question }))
 			);
 		}

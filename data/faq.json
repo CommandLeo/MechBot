@@ -6,6 +6,9 @@
 		"files": ["https://cdn.discordapp.com/attachments/647255354693910552/782357813343158332/Iron_Nether.litematic"]
 	},
 	"Ip": {
-		"content": "Mechanists is a **private whitelisted** server. Therefore the only way to join us is by submitting an application, if they are open."
+		"content": "Mechanists is a **private whitelisted** server. Right now the only way to join us is getting invited."
+	},
+	"MTDR": {
+		"content": "https://discord.gg/UT8ns46As9"
 	}
 }

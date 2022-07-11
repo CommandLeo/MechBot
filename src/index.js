@@ -13,7 +13,9 @@ import {CONFIG, FAQ, MECHANIST_PATH, readJson} from "./io.js";
 import {sqlClient} from "./database.js";
 
 export const MECHANIST_DATA = readJson(MECHANIST_PATH)
-const config = readJson(CONFIG)
+export const BOT_CONFIG = readJson(CONFIG)
+
+let IS_BOT_READY = false; // Flag to check if bot is ready. If it's not ready none of the events will fire.
 
 export const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.DIRECT_MESSAGES],
@@ -27,7 +29,7 @@ client.once('ready', async () => {
 	Object.values(sqlClient.models).forEach(model => model.sync());
 
 	const guilds = await client.guilds.fetch();
-	client.GUILD = await guilds.find(guild => guild.id === config["guild-id"])?.fetch();
+	client.GUILD = await guilds.find(guild => guild.id === BOT_CONFIG["guild-id"])?.fetch();
 
 	if (!client.GUILD) {
 		console.error('Could not find guild!');
@@ -52,9 +54,13 @@ client.once('ready', async () => {
 	checkStreaming(client).catch(console.error);
 	checkTempRoles(client).catch(console.error);
 	checkReminders(client).catch(console.error);
+
+	IS_BOT_READY = true;
 });
 
 client.on('interactionCreate', async interaction => {
+	if (!IS_BOT_READY) return;
+
 	if (interaction.isCommand() || interaction.isContextMenu()) {
 		const command = client.commands?.get(interaction.commandName);
 		if (!command) return;
@@ -94,6 +100,8 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', message => {
+	if (!IS_BOT_READY) return;
+
 	automod(message).catch(console.error);
 	if (message.channel.type === 'DM' && !message.author.bot) {
 		logDM(message);
@@ -101,6 +109,8 @@ client.on('messageCreate', message => {
 });
 
 client.on('presenceUpdate', (oldPresence, newPresence) => {
+	if (!IS_BOT_READY) return;
+
 	const member = newPresence.member;
 	const MEMBER_ROLE = client.ROLES.MEMBER;
 	const STREAMING_ROLE = client.ROLES.STREAMING;
@@ -119,6 +129,8 @@ client.on('presenceUpdate', (oldPresence, newPresence) => {
 });
 
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
+	if (!IS_BOT_READY) return;
+
 	if (newMember.guild.id !== client.GUILD.id) return;
 
 	// Timeout handling
@@ -187,6 +199,8 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 });
 
 client.on('guildMemberRemove', async member => {
+	if (!IS_BOT_READY) return;
+
 	if (member.guild.id !== client.GUILD.id) return;
 
 	const roles = member.roles.cache;
@@ -227,6 +241,8 @@ client.on('guildMemberRemove', async member => {
 });
 
 client.on('guildBanAdd', async ban => {
+	if (!IS_BOT_READY) return;
+
 	if (ban.guild.id !== client.GUILD.id) return;
 
 	// Ban handling
@@ -246,6 +262,8 @@ client.on('guildBanAdd', async ban => {
 });
 
 client.on('guildBanRemove', async ban => {
+	if (!IS_BOT_READY) return;
+
 	if (ban.guild.id !== client.GUILD.id) return;
 
 	// Unban handling

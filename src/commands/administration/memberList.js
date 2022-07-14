@@ -18,7 +18,7 @@ export const command = {
 		const mechEmoji = emojiManager?.cache.find(emoji => emoji.name === 'mechanistsSpin');
 		const memberData = Object.entries(memberList).map(([memberName, { youtube, twitch, twitter, github }], i) => {
 			const escapedName = memberName.replace(/\s+/gi, '');
-			const emoji = emojiManager?.cache.find(({ name }) => name === escapedName);
+			const emoji = emojiManager?.cache.find(emoji => emoji.name === escapedName && emoji.guild.name === 'Mech Emoji Server');
 			const name = `${emoji || ''} ${memberName}`;
 			const socials = [
 				youtube && Formatters.hyperlink('Youtube', `https://www.youtube.com/${youtube}`),

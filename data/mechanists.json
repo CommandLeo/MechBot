@@ -16,8 +16,8 @@
 		"SUPPORTER_LVL2": "Supporter Lvl 2"
 	},
 	"channels": {
-		"LOG": "mod-log",
-		"BOT_SPAM": "bot-spam",
+		"LOG": "🤖mod-log",
+		"BOT_SPAM": "🤖bot-spam",
 		"BOARD": "🛹board",
 		"INFO": "📋server-info",
 		"STREAM_ANNOUNCEMENTS": "stream-announcements",

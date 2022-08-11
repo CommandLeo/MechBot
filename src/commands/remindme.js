@@ -6,6 +6,8 @@ const textInput = new TextInputComponent({ customId: 'reminder', label: 'Reminde
 const row = new MessageActionRow({ components: [textInput] });
 const modal = new Modal({ customId: 'reminder-modal', title: 'Write the reminder', components: [row] });
 
+const MS_IN_ONE_MONTH = 2592000000;
+
 export const command = {
 	data: {
 		name: 'remindme',
@@ -20,7 +22,7 @@ export const command = {
 		const time = ms(interaction.options.getString('time'));
 		let msg = interaction.options.getString('message');
 
-		if (!time) return interaction.reply({ content: 'Invalid time', ephemeral: true });
+		if (!time || time > MS_IN_ONE_MONTH) return interaction.reply({ content: 'Invalid time', ephemeral: true });
 
 		if (!msg) {
 			await interaction.showModal(modal);

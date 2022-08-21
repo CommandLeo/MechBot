@@ -1,3 +1,5 @@
+import { ActivityType } from 'discord.js';
+
 import { client } from '../index.js';
 
 export async function startedStreaming(member, activity) {
@@ -23,7 +25,7 @@ export async function stoppedStreaming(member) {
 export async function checkStreaming(client) {
 	const STREAMING_ROLE = client.ROLES.STREAMING;
 	STREAMING_ROLE.members.forEach(async member => {
-		if (!member.presence.activities.some(activity => activity.type == 'STREAMING')) {
+		if (!member.presence.activities.some(activity => activity.type == ActivityType.Streaming)) {
 			await member.roles.remove(STREAMING_ROLE);
 			console.log(`[STREAMING] Removed Streaming role from ${member.user.tag} (id: ${member.id}) as they are not currently streaming`);
 		}

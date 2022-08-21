@@ -1,12 +1,14 @@
+import { ApplicationCommandType, EmbedBuilder, hyperlink } from 'discord.js';
 import got from 'got';
-import { Formatters, MessageEmbed } from 'discord.js';
+
 import { client, config, MECHANIST_DATA } from '../../index.js';
 import { MECHANIST_PATH, writeJson } from '../../io.js';
 
 export const command = {
 	data: {
 		name: 'memberlist',
-		description: 'Updates the member list'
+		description: 'Updates the member list',
+		type: ApplicationCommandType.ChatInput
 	},
 	async execute(interaction) {
 		const memberList = await got(MECHANIST_DATA.memberListUrl).json();
@@ -21,10 +23,10 @@ export const command = {
 			const emoji = emojiManager?.cache.find(emoji => emoji.name === escapedName && emoji.guild.name === 'Mech Emoji Server');
 			const name = `${emoji || ''} ${memberName}`;
 			const socials = [
-				youtube && Formatters.hyperlink('Youtube', `https://www.youtube.com/${youtube}`),
-				twitch && Formatters.hyperlink('Twitch', `https://www.twitch.tv/${twitch}`),
-				twitter && Formatters.hyperlink('Twitter', `https://twitter.com/${twitter}`),
-				github && Formatters.hyperlink('Github', `https://github.com/${github}`)
+				youtube && hyperlink('Youtube', `https://www.youtube.com/${youtube}`),
+				twitch && hyperlink('Twitch', `https://www.twitch.tv/${twitch}`),
+				twitter && hyperlink('Twitter', `https://twitter.com/${twitter}`),
+				github && hyperlink('Github', `https://github.com/${github}`)
 			];
 			const value = socials.filter(Boolean).join(' | ') || '---';
 			return { name, value, inline: true };
@@ -37,7 +39,7 @@ export const command = {
 			fields.forEach((field, i) => {
 				if (i % 3 !== 2) field.name += '    𝅺';
 			});
-			const embed = new MessageEmbed({ color: '#3498db', fields });
+			const embed = new EmbedBuilder({ color: 0x3498db, fields });
 			if (i === 0) embed.setTitle(`${mechEmoji} Mechanists Members`);
 			return embed;
 		});

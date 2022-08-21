@@ -1,9 +1,10 @@
-import { MessageActionRow, MessageAttachment, MessageButton, MessageEmbed } from 'discord.js';
-import { getPollResults } from '../utilities/polls.js';
+import { ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, AttachmentBuilder } from 'discord.js';
+
 import { client } from '../index.js';
+import { getPollResults } from '../utilities/polls.js';
 
 const pollOptions = Array.from({ length: 20 }, (_, i) => ({
-	type: 'STRING',
+	type: ApplicationCommandOptionType.String,
 	name: `option-${i + 1}`,
 	description: `Option ${i + 1} for the poll`
 }));
@@ -12,28 +13,29 @@ export const command = {
 	data: {
 		name: 'poll',
 		description: 'Manages polls',
+		type: ApplicationCommandType.ChatInput,
 		options: [
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'create',
 				description: 'Creates a poll',
 				options: [
-					{ type: 'STRING', name: 'question', description: 'The question for the poll', required: true },
+					{ type: ApplicationCommandOptionType.String, name: 'question', description: 'The question for the poll', required: true },
 					...pollOptions,
-					{ type: 'ATTACHMENT', name: 'image', description: 'An image for the poll' }
+					{ type: ApplicationCommandOptionType.Attachment, name: 'image', description: 'An image for the poll' }
 				]
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'end',
 				description: 'Ends a poll',
-				options: [{ type: 'STRING', name: 'poll-id', description: 'The id of the poll', required: true }]
+				options: [{ type: ApplicationCommandOptionType.String, name: 'poll-id', description: 'The id of the poll', required: true }]
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'results',
 				description: 'Prints the results of a poll',
-				options: [{ type: 'STRING', name: 'poll-id', description: 'The id of the poll', required: true }]
+				options: [{ type: ApplicationCommandOptionType.String, name: 'poll-id', description: 'The id of the poll', required: true }]
 			}
 		]
 	},
@@ -49,27 +51,27 @@ export const command = {
 			const message = await interaction.deferReply({ fetchReply: true });
 			const pollId = message.id;
 
-			const embed = new MessageEmbed({
+			const embed = new EmbedBuilder({
 				title: question.length > 256 ? `${question.slice(0, 253)}...` : question,
 				description: options.map(option => `- ${option}`).join('\n'),
 				footer: { text: `Poll Id: ${pollId}` },
-				color: '#3498db',
+				color: 0x3498db,
 				timestamp: Date.now()
 			});
 			if (attachment?.contentType.startsWith('image/')) embed.setImage(attachment.url);
 
-			const voteButton = new MessageButton({
+			const voteButton = new ButtonBuilder({
 				customId: `poll-vote-${pollId}`,
 				label: 'Vote',
 				emoji: '🗳',
-				style: 'PRIMARY'
+				style: ButtonStyle.Primary
 			});
-			const retractButton = new MessageButton({
+			const retractButton = new ButtonBuilder({
 				customId: `poll-retract-${pollId}`,
 				label: 'Retract',
-				style: 'DANGER'
+				style: ButtonStyle.Danger
 			});
-			const row = new MessageActionRow({ components: [voteButton, retractButton] });
+			const row = new ActionRowBuilder({ components: [voteButton, retractButton] });
 
 			await interaction.editReply({ embeds: [embed], components: [row] });
 
@@ -91,9 +93,9 @@ export const command = {
 			if (!message) return await interaction.editReply('Failed to find the message of the poll');
 
 			const buffer = await getPollResults(poll);
-			const image = new MessageAttachment(buffer, 'poll-results.png');
-			const resultsEmbed = new MessageEmbed({
-				color: '#3498db',
+			const image = new AttachmentBuilder(buffer, { name: 'poll-results.png' });
+			const resultsEmbed = new EmbedBuilder({
+				color: 0x3498db,
 				title: 'Poll Results',
 				image: { url: 'attachment://poll-results.png' }
 			});

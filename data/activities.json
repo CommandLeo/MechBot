@@ -1,62 +1,62 @@
 [
 	{
-		"type": "PLAYING",
+		"type": "Playing",
 		"name": "\"\"vanilla\"\""
 	},
 	{
-		"type": "PLAYING",
+		"type": "Playing",
 		"name": "vanilla++"
 	},
 	{
-		"type": "PLAYING",
+		"type": "Playing",
 		"name": "on Mechanists"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "Kdender's YouTube Videos"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "SpeedCuber's Stream"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "DesktopFolder's Stream"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "DesktopFolder's YouTube Videos"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "InventorPWB's YouTube Videos"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "Beppo break 21,744 bedrock"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "1.18 from afar"
 	},
 	{
-		"type": "COMPETING",
+		"type": "Competing",
 		"name": "Epic Bot Battles"
 	},
 	{
-		"type": "COMPETING",
+		"type": "Competing",
 		"name": "Perimeter Speedruns"
 	},
 	{
-		"type": "LISTENING",
+		"type": "Listening",
 		"name": "Ragou42's puns"
 	},
 	{
-		"type": "LISTENING",
+		"type": "Listening",
 		"name": "THE SOUND 🐢"
 	},
 	{
-		"type": "WATCHING",
+		"type": "Watching",
 		"name": "Masas TODO list grow"
 	}
 ]

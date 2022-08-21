@@ -1,10 +1,12 @@
+import { ApplicationCommandType } from 'discord.js';
+
 import { client } from '../index.js';
 
 export const command = {
 	data: {
 		name: 'ping',
 		description: 'Retrieves the ping',
-		defaultPermission: 0
+		type: ApplicationCommandType.ChatInput
 	},
 	async execute(interaction) {
 		const mechEmoji = client.emojis.cache.find(emoji => emoji.name === 'mechanistsSpin');

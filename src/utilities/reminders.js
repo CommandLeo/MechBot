@@ -1,5 +1,7 @@
-import { Formatters } from 'discord.js';
+import { time } from 'discord.js';
+
 import { client } from '../index.js';
+
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function createReminder(member, channel, msg, time) {
@@ -13,7 +15,7 @@ export async function createReminder(member, channel, msg, time) {
 }
 
 async function remind(member, channel, msg, date, reminder) {
-	await channel?.send({ content: `Reminder for ${member}: ${msg}\nSet: ${Formatters.time(Math.floor(date / 1000), 'R')}`, allowedMentions: { users: [member.id] } });
+	await channel?.send({ content: `Reminder for ${member}: ${msg}\nSet: ${time(Math.floor(date / 1000), 'R')}`, allowedMentions: { users: [member.id] } });
 	await reminder.destroy();
 }
 

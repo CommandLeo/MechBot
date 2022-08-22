@@ -1,10 +1,11 @@
-import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
+import { ApplicationCommandType, ApplicationCommandOptionType, TextInputBuilder, TextInputStyle, ActionRowBuilder, ModalBuilder } from 'discord.js';
 import ms from 'ms';
+
 import { createReminder } from '../utilities/reminders.js';
 
-const textInput = new TextInputComponent({ customId: 'reminder', label: 'Reminder', style: 'PARAGRAPH', required: true });
-const row = new MessageActionRow({ components: [textInput] });
-const modal = new Modal({ customId: 'reminder-modal', title: 'Write the reminder', components: [row] });
+const textInput = new TextInputBuilder({ customId: 'reminder', label: 'Reminder', style: TextInputStyle.Paragraph, required: true });
+const row = new ActionRowBuilder({ components: [textInput] });
+const modal = new ModalBuilder({ customId: 'reminder-modal', title: 'Write the reminder', components: [row] });
 
 const MS_IN_ONE_MONTH = 2592000000;
 
@@ -12,9 +13,10 @@ export const command = {
 	data: {
 		name: 'remindme',
 		description: 'Sets a reminder',
+		type: ApplicationCommandType.ChatInput,
 		options: [
-			{ type: 'STRING', name: 'time', description: 'How much time you will be reminded in', required: true },
-			{ type: 'STRING', name: 'message', description: 'The message to remind' }
+			{ type: ApplicationCommandOptionType.String, name: 'time', description: 'How much time you will be reminded in', required: true },
+			{ type: ApplicationCommandOptionType.String, name: 'message', description: 'The message to remind' }
 		]
 	},
 	async execute(interaction) {

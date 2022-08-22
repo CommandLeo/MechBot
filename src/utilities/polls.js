@@ -1,5 +1,6 @@
-import { MessageActionRow, MessageSelectMenu } from 'discord.js';
+import { SelectMenuBuilder, ActionRowBuilder } from 'discord.js';
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+
 import { client } from '../index.js';
 
 export async function handlePollVote(interaction) {
@@ -11,12 +12,12 @@ export async function handlePollVote(interaction) {
 
 	const vote = poll.votes[interaction.member.id];
 
-	const selectMenu = new MessageSelectMenu({
+	const selectMenu = new SelectMenuBuilder({
 		custom_id: `poll-selectoption-${poll.pollId}`,
 		placeholder: `Vote for '${poll.question.length > 135 ? `${poll.question.slice(0, 135)}...` : poll.question}'`,
 		options: poll.options.map(option => ({ label: option, value: option, default: option == vote }))
 	});
-	const row = new MessageActionRow({ components: [selectMenu] });
+	const row = new ActionRowBuilder({ components: [selectMenu] });
 
 	await interaction.editReply({ components: [row] });
 }

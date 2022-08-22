@@ -1,11 +1,13 @@
+import { ApplicationCommandType } from 'discord.js';
+
+import { client } from '../../index.js';
 import { logMessageDeleted, logMemePrisoner } from '../../loggers.js';
 import { giveTempRole } from '../../utilities/tempRoles.js';
-import {client} from "../../index.js";
 
 export const command = {
 	data: {
 		name: 'Delete Message',
-		type: 'MESSAGE'
+		type: ApplicationCommandType.Message
 	},
 	async execute(interaction) {
 		const message = await interaction.channel.messages.fetch(interaction.targetId);

@@ -1,9 +1,12 @@
+import { ApplicationCommandType } from 'discord.js';
+
 import { client } from '../../index.js';
 
 export const command = {
 	data: {
 		name: 'emojiservers',
-		description: 'Lists the emoji servers'
+		description: 'Lists the emoji servers',
+		type: ApplicationCommandType.ChatInput
 	},
 	async execute(interaction) {
 		const guilds = client.guilds.cache.filter(guild => guild.name === 'Mech Emoji Server');

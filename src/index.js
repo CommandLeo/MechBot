@@ -1,4 +1,4 @@
-import { Client, Intents } from 'discord.js';
+import { Client, GatewayIntentBits, Partials, ChannelType, ActivityType, AuditLogEvent } from 'discord.js';
 
 import { logBan, logDM, logKick, logTimeout, logUnban, logUntimeout } from './loggers.js';
 import { checkTempRoles } from './utilities/tempRoles.js';
@@ -16,8 +16,8 @@ export const MECHANIST_DATA = readJson(MECHANIST_PATH);
 export const config = readJson(CONFIG);
 
 export const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.DIRECT_MESSAGES],
-	partials: ['MESSAGE', 'CHANNEL']
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences, GatewayIntentBits.DirectMessages],
+	partials: [Partials.Message, Partials.Channel]
 });
 
 client.once('ready', async () => {
@@ -46,7 +46,7 @@ client.once('ready', async () => {
 	checkReminders(client).catch(console.error);
 
 	client.on('interactionCreate', async interaction => {
-		if (interaction.isCommand() || interaction.isContextMenu()) {
+		if (interaction.isCommand() || interaction.isUserContextMenuCommand()) {
 			const command = client.commands?.get(interaction.commandName);
 			if (!command) return;
 			command.execute(interaction).catch(error => {
@@ -86,7 +86,7 @@ client.once('ready', async () => {
 
 	client.on('messageCreate', message => {
 		automod(message).catch(console.error);
-		if (message.channel.type === 'DM' && !message.author.bot) {
+		if (message.channel.type === ChannelType.DM && !message.author.bot) {
 			logDM(message);
 		}
 	});
@@ -101,7 +101,8 @@ client.once('ready', async () => {
 		if (!member?.roles.cache.has(MEMBER_ROLE.id)) return;
 
 		const hasStreamingRole = member.roles.cache.has(STREAMING_ROLE.id);
-		const activity = newPresence.activities?.find(activity => activity.type === 'STREAMING');
+		const activity = newPresence.activities?.find(activity => activity.type === ActivityType.Streaming);
+
 		if (!hasStreamingRole && activity) {
 			startedStreaming(member, activity).catch(console.error);
 		} else if (hasStreamingRole && !activity) {
@@ -116,7 +117,7 @@ client.once('ready', async () => {
 
 		const fetchedLog = await newMember.guild.fetchAuditLogs({
 			limit: 1,
-			type: 'MEMBER_UPDATE'
+			type: AuditLogEvent.MemberUpdate
 		});
 
 		const oldTimeStamp = oldMember.communicationDisabledUntilTimestamp;
@@ -184,7 +185,7 @@ client.once('ready', async () => {
 		/* 	if (roles.has(client.ROLES.MUTED.id)) {
 			const banReason = 'left the server while being muted';
 			await member.ban({ banReason }).catch(() => console.warn(`Could not ban ${member.user.tag}`));
-			logBan(member, member.guild.me, banReason);
+			logBan(member, member.guild.me, banReason); // Changes in v14	
 			member.send('You have been banned due to leaving the server while being muted').catch(() => console.warn(`Could not inform ${member.user.tag} about their ban`));
 		} */
 
@@ -199,7 +200,7 @@ client.once('ready', async () => {
 
 		const fetchedLog = await member.guild.fetchAuditLogs({
 			limit: 1,
-			type: 'MEMBER_KICK'
+			type: AuditLogEvent.MemberKick
 		});
 
 		const kickLog = fetchedLog.entries.first();
@@ -222,7 +223,7 @@ client.once('ready', async () => {
 
 		const fetchedLog = await ban.guild.fetchAuditLogs({
 			limit: 1,
-			type: 'MEMBER_BAN_ADD'
+			type: AuditLogEvent.MemberBanAdd
 		});
 
 		const { executor, target, reason } = fetchedLog.entries.first() || {};
@@ -240,7 +241,7 @@ client.once('ready', async () => {
 
 		const fetchedLog = await ban.guild.fetchAuditLogs({
 			limit: 1,
-			type: 'MEMBER_BAN_REMOVE'
+			type: AuditLogEvent.MemberBanRemove
 		});
 
 		const { executor, target, reason } = fetchedLog.entries.first() || {};

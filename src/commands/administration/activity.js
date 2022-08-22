@@ -1,4 +1,5 @@
-import { Formatters } from 'discord.js';
+import { ApplicationCommandType, ApplicationCommandOptionType, ActivityType, codeBlock } from 'discord.js';
+
 import { client } from '../../index.js';
 import { ACTIVITIES, readJson, writeJson } from '../../io.js';
 
@@ -8,40 +9,45 @@ export const command = {
 	data: {
 		name: 'activity',
 		description: 'Manages the activity of the bot',
+		type: ApplicationCommandType.ChatInput,
 		options: [
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'set',
 				description: 'Sets the activity',
-				options: [{ type: 'INTEGER', name: 'index', description: 'The index', minValue: 1 }]
+				options: [{ type: ApplicationCommandOptionType.Integer, name: 'index', description: 'The index', minValue: 1 }]
 			},
-			{ type: 'SUB_COMMAND', name: 'list', description: 'Lists all the activities' },
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
+				name: 'list',
+				description: 'Lists all the activities'
+			},
+			{
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'create',
 				description: 'Creates a new activity',
 				options: [
 					{
-						type: 'STRING',
+						type: ApplicationCommandOptionType.String,
 						name: 'type',
 						description: 'The type of the activity',
 						choices: [
-							{ name: 'Playing', value: 'PLAYING' },
-							{ name: 'Streaming', value: 'STREAMING' },
-							{ name: 'Listening', value: 'LISTENING' },
-							{ name: 'Watching', value: 'WATCHING' },
-							{ name: 'Competing', value: 'COMPETING' }
+							{ name: 'Playing', value: 'Playing' },
+							{ name: 'Streaming', value: 'Streaming' },
+							{ name: 'Listening', value: 'Listening' },
+							{ name: 'Watching', value: 'Watching' },
+							{ name: 'Competing', value: 'Competing' }
 						],
 						required: true
 					},
-					{ type: 'STRING', name: 'name', description: 'The name of the activity', required: true }
+					{ type: ApplicationCommandOptionType.String, name: 'name', description: 'The name of the activity', required: true }
 				]
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'delete',
 				description: 'Deletes an activity',
-				options: [{ type: 'INTEGER', name: 'index', description: 'The index', minValue: 1, required: true }]
+				options: [{ type: ApplicationCommandOptionType.Integer, name: 'index', description: 'The index', minValue: 1, required: true }]
 			}
 		]
 	},
@@ -51,14 +57,17 @@ export const command = {
 		if (subCommand === 'set') {
 			const index = interaction.options.getInteger('index');
 			if (index > BOT_ACTIVITIES.length) return await interaction.reply({ content: 'Invalid index!', ephemeral: true });
-			const activity = index ? BOT_ACTIVITIES[index - 1] : BOT_ACTIVITIES[Math.floor(Math.random() * BOT_ACTIVITIES.length)];
+			const { type, name } = index ? BOT_ACTIVITIES[index - 1] : BOT_ACTIVITIES[Math.floor(Math.random() * BOT_ACTIVITIES.length)];
 
-			client.user.setActivity(activity);
+			const typeNumber = ActivityType[type];
+			if (!Number.isInteger(typeNumber)) return await interaction.reply({ content: 'Invalid activity type!', ephemeral: true });
+
+			client.user.setActivity({ type: typeNumber, name });
 			const msg = index ? `Activity ${index} set` : `Random activity set`;
 			console.log(`[ACTIVITY] ${msg}`);
 			await interaction.reply(msg);
 		} else if (subCommand === 'list') {
-			await interaction.reply(Formatters.codeBlock(printActivities()));
+			await interaction.reply(codeBlock(printActivities()));
 		} else if (subCommand === 'create') {
 			const type = interaction.options.getString('type');
 			const name = interaction.options.getString('name');

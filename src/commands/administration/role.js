@@ -1,47 +1,49 @@
+import { TextInputBuilder, TextInputStyle, ActionRowBuilder, ModalBuilder, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import ms from 'ms';
-import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
+
 import { giveTempRole } from '../../utilities/tempRoles.js';
 import { logRoleGiven, logTempRoleGiven, logRoleRemoved } from '../../loggers.js';
 import { client, MECHANIST_DATA } from '../../index.js';
 
-const textInput = new TextInputComponent({ customId: 'reason', label: 'Reason', style: 'SHORT', required: true });
-const row = new MessageActionRow({ components: [textInput] });
-const modal = new Modal({ customId: 'reason-modal', title: 'Provide a reason', components: [row] });
+const textInput = new TextInputBuilder({ customId: 'reason', label: 'Reason', style: TextInputStyle.Short, required: true });
+const row = new ActionRowBuilder({ components: [textInput] });
+const modal = new ModalBuilder({ customId: 'reason-modal', title: 'Provide a reason', components: [row] });
 
 export const command = {
 	data: {
 		name: 'role',
 		description: 'Manages the roles of a user',
+		type: ApplicationCommandType.ChatInput,
 		options: [
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'give',
 				description: 'Gives a role to a user',
 				options: [
-					{ type: 'USER', name: 'member', description: 'The member to whom to give the role', required: true },
-					{ type: 'ROLE', name: 'role', description: 'The role to give', required: true },
-					{ type: 'STRING', name: 'reason', description: 'The reason for giving the role' }
+					{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to whom to give the role', required: true },
+					{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role to give', required: true },
+					{ type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason for giving the role' }
 				]
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'give-temp',
 				description: 'Temporarily gives a role to a user',
 				options: [
-					{ type: 'USER', name: 'member', description: 'The member to whom to give the role', required: true },
-					{ type: 'ROLE', name: 'role', description: 'The role to give', required: true },
-					{ type: 'STRING', name: 'duration', description: 'How long to give the role for', required: true },
-					{ type: 'STRING', name: 'reason', description: 'The reason for giving the role' }
+					{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to whom to give the role', required: true },
+					{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role to give', required: true },
+					{ type: ApplicationCommandOptionType.String, name: 'duration', description: 'How long to give the role for', required: true },
+					{ type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason for giving the role' }
 				]
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'remove',
 				description: 'Removes a role from a user',
 				options: [
-					{ type: 'USER', name: 'member', description: 'The member to remove the role from', required: true },
-					{ type: 'ROLE', name: 'role', description: 'The role to remove', required: true },
-					{ type: 'STRING', name: 'reason', description: 'The reason for removing the role' }
+					{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to remove the role from', required: true },
+					{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role to remove', required: true },
+					{ type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason for removing the role' }
 				]
 			}
 		]

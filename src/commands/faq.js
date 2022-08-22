@@ -1,10 +1,12 @@
+import { ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { FAQ, readJson } from '../io.js';
 
 export const command = {
 	data: {
 		name: 'faq',
 		description: 'FAQ',
-		options: [{ type: 'STRING', name: 'question', description: 'The question to answer', autocomplete: true, required: true }]
+		type: ApplicationCommandType.ChatInput,
+		options: [{ type: ApplicationCommandOptionType.String, name: 'question', description: 'The question to answer', autocomplete: true, required: true }]
 	},
 	async execute(interaction) {
 		const data = readJson(FAQ);

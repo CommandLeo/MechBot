@@ -1,16 +1,17 @@
-import { TextInputComponent, Modal, MessageActionRow } from 'discord.js';
+import { TextInputBuilder, TextInputStyle, ActionRowBuilder, ModalBuilder, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 
-const textInput = new TextInputComponent({ customId: 'message', label: 'Message', style: 'PARAGRAPH', required: true });
-const row = new MessageActionRow({ components: [textInput] });
-const modal = new Modal({ customId: 'message-modal', title: 'Write a message', components: [row] });
+const textInput = new TextInputBuilder({ customId: 'message', label: 'Message', style: TextInputStyle.Paragraph, required: true });
+const row = new ActionRowBuilder({ components: [textInput] });
+const modal = new ModalBuilder({ customId: 'message-modal', title: 'Write a message', components: [row] });
 
 export const command = {
 	data: {
 		name: 'sendmsg',
 		description: 'Sends a message in DMs',
+		type: ApplicationCommandType.ChatInput,
 		options: [
-			{ type: 'USER', name: 'user', description: 'The user to whom the message will be sent', required: true },
-			{ type: 'STRING', name: 'message', description: 'The message to send' }
+			{ type: ApplicationCommandOptionType.User, name: 'user', description: 'The user to whom the message will be sent', required: true },
+			{ type: ApplicationCommandOptionType.String, name: 'message', description: 'The message to send' }
 		]
 	},
 	async execute(interaction) {

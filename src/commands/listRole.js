@@ -1,11 +1,12 @@
-import { MessageEmbed } from 'discord.js';
+import { ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { client } from '../index.js';
 
 export const command = {
 	data: {
 		name: 'listrole',
 		description: 'Lists users that have a certain role',
-		options: [{ type: 'ROLE', name: 'role', description: 'The role of which to list the users', required: true }]
+		type: ApplicationCommandType.ChatInput,
+		options: [{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role of which to list the users', required: true }]
 	},
 	async execute(interaction) {
 		const role = interaction.options.getRole('role');
@@ -18,7 +19,7 @@ export const command = {
 			const elementsAmount = Math.ceil(data.length / embedsAmount / 3) * 3;
 			const chunks = Array.from({ length: Math.min(10, embedsAmount) }, (_, i) => data.slice(elementsAmount * i, elementsAmount * (i + 1)));
 			const embeds = chunks.map((fields, i) => {
-				const embed = new MessageEmbed({ color: '#3498db', fields });
+				const embed = new EmbedBuilder({ color: 0x3498db, fields });
 				if (i === 0) embed.setTitle(`${mechEmoji} ${data.length} user${data.length > 1 ? 's' : ''} with role '${role.name}'`);
 				return embed;
 			});

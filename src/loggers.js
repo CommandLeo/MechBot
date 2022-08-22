@@ -1,18 +1,18 @@
-import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import ms from 'ms';
 import { client } from './index.js';
 
 const COLORS = {
-	RED: '#e74c3c',
-	GREEN: '#2ecc71',
-	ORANGE: '#e67e22',
-	BLUE: '#3498db'
+	RED: 0xe74c3c,
+	GREEN: 0x2ecc71,
+	ORANGE: 0xe67e22,
+	BLUE: 0x3498db
 };
 
 export function logDM(message) {
 	const BOT_SPAM_CHANNEL = client.CHANNELS.BOT_SPAM;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `📩 DM Received`,
 		description: `${message.author} sent a private message:\n${message.content}\n\n${
 			message.attachments.size ? `**Attachments**: ${message.attachments.map(attachment => attachment.url).join(', ')}` : ''
@@ -28,7 +28,7 @@ export function logDM(message) {
 export function logMessageDeleted(message, executor, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `🗑 Message Deleted`,
 		description: `${executor} deleted the message of ${message.author} in ${message.channel}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Author: ${message.author.id} | Message ID: ${message.id}` },
@@ -36,8 +36,8 @@ export function logMessageDeleted(message, executor, reason) {
 		thumbnail: { url: message.member.displayAvatarURL() },
 		timestamp: Date.now()
 	});
-	const button = new MessageButton({ customId: `show-deleted-message-${message.id}`, label: 'Show Message', emoji: '✉', style: 'SECONDARY' });
-	const row = new MessageActionRow({ components: [button] });
+	const button = new ButtonBuilder({ customId: `show-deleted-message-${message.id}`, label: 'Show Message', emoji: '✉', style: ButtonStyle.Secondary });
+	const row = new ActionRowBuilder({ components: [button] });
 
 	LOG_CHANNEL.send({ embeds: [embed], components: [row] });
 }
@@ -45,7 +45,7 @@ export function logMessageDeleted(message, executor, reason) {
 export function logRoleGiven(giver, target, role, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `Role Given | ${role.name}`,
 		description: `${target} has been given the ${role} role by ${giver}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Target: ${target.id} | Giver: ${giver.id}` },
@@ -62,7 +62,7 @@ export function logTempRoleGiven(giver, target, role, duration, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 	const amount = ms(duration, { long: true });
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `Temp Role Given | ${role.name}`,
 		description: `${target} has been given the ${role} role by ${giver} for ${amount}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Target: ${target.id} | Giver: ${giver.id}` },
@@ -80,7 +80,7 @@ export function logTempRoleGiven(giver, target, role, duration, reason) {
 export function logRoleRemoved(remover, target, role, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `Role Removed | ${role.name}`,
 		description: `${target} has had the ${role} role removed by ${remover}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Target: ${target.id} | Remover: ${remover.id}` },
@@ -97,7 +97,7 @@ export function logMemePrisoner(member) {
 	const MEME_PRISONER_ROLE = client.ROLES.MEME_PRISONER;
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `Meme Prisoner`,
 		description: `${member} has been given the ${MEME_PRISONER_ROLE} role for 1 day 🤡`,
 		footer: { text: `Target: ${member.id}` },
@@ -113,7 +113,7 @@ export function logMemePrisoner(member) {
 export function logBan(user, executor, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `🔨 Ban`,
 		description: `${user} has been banned${executor ? ` by ${executor}` : ''}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Banned User: ${user.id}` },
@@ -129,7 +129,7 @@ export function logBan(user, executor, reason) {
 export function logUnban(user, executor, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `🔨 Unban`,
 		description: `${user} has been unbanned${executor ? ` by ${executor}` : ''}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Unbanned User: ${user.id}` },
@@ -145,7 +145,7 @@ export function logUnban(user, executor, reason) {
 export function logKick(user, executor, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `👢 Kick`,
 		description: `${user} has been kicked by ${executor}\n${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Kicked User: ${user.id}` },
@@ -162,7 +162,7 @@ export function logTimeout(member, timestamp, executor, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 	const time = ms(timestamp - Date.now(), { long: true });
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `⌚ Timeout`,
 		description: `${member} has been timed out for ${time}${executor ? ` by ${executor}` : ''}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Timed Out User: ${member.id}` },
@@ -178,7 +178,7 @@ export function logTimeout(member, timestamp, executor, reason) {
 export function logUntimeout(member, executor, reason) {
 	const LOG_CHANNEL = client.CHANNELS.LOG;
 
-	const embed = new MessageEmbed({
+	const embed = new EmbedBuilder({
 		title: `⌚ Untimeout`,
 		description: `${member} has been untimed out${executor ? ` by ${executor}` : ''}${reason ? `\n**Reason**: ${reason}` : ''}`,
 		footer: { text: `Untimed Out User: ${member.id}` },

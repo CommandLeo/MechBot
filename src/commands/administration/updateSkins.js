@@ -1,9 +1,11 @@
+import { ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import got from 'got';
+
 import { client, MECHANIST_DATA } from '../../index.js';
 
 async function createEmojiSkin(guild, [member, { ign }]) {
 	const escapedName = member.replace(/\s+/gi, '');
-	await guild.emojis.create(`https://minotar.net/helm/${ign}`, escapedName);
+	await guild.emojis.create({ attachment: `https://minotar.net/helm/${ign}`, name: escapedName });
 	console.log(`Created skin emoji for ${member}`);
 }
 
@@ -11,7 +13,8 @@ export const command = {
 	data: {
 		name: 'updateskins',
 		description: 'Updates skins',
-		options: [{ type: 'USER', name: 'member', description: 'The member to whom to update the skin' }]
+		type: ApplicationCommandType.ChatInput,
+		options: [{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to whom to update the skin' }]
 	},
 	async execute(interaction) {
 		const member = interaction.options.getUser('member');
@@ -45,7 +48,7 @@ export const command = {
 
 			const guildAmount = Math.ceil(memberData.length / 50) - guilds.length;
 			for (let i = 0; i < guildAmount; i++) {
-				guilds.push(await client.guilds.create('Mech Emoji Server', { channels: [{ name: 'general' }] }));
+				guilds.push(await client.guilds.create({ name: 'Mech Emoji Server', channels: [{ name: 'general' }] }));
 				console.log('Created a new emoji guild');
 			}
 

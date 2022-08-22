@@ -1,9 +1,12 @@
+import { ApplicationCommandType } from 'discord.js';
+
 import { client } from '../../index.js';
 
 export const command = {
 	data: {
 		name: 'active',
-		description: 'Makes you active/inactive'
+		description: 'Makes you active/inactive',
+		type: ApplicationCommandType.ChatInput
 	},
 	async execute(interaction) {
 		const roleManager = interaction.member.roles;

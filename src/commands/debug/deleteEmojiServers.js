@@ -9,7 +9,7 @@ export const command = {
 		type: ApplicationCommandType.ChatInput
 	},
 	async execute() {
-		const guilds = client.guilds.cache.filter(guild => guild.name == 'Mech Emoji Server');
+		const guilds = client.guilds.cache.filter(guild => guild.name === 'Mech Emoji Server');
 		guilds.forEach(guild => guild.delete());
 	}
 };

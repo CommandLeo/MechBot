@@ -15,7 +15,7 @@ export async function handlePollVote(interaction) {
 	const selectMenu = new SelectMenuBuilder({
 		custom_id: `poll-selectoption-${poll.pollId}`,
 		placeholder: `Vote for '${poll.question.length > 135 ? `${poll.question.slice(0, 135)}...` : poll.question}'`,
-		options: poll.options.map(option => ({ label: option, value: option, default: option == vote }))
+		options: poll.options.map(option => ({ label: option, value: option, default: option === vote }))
 	});
 	const row = new ActionRowBuilder({ components: [selectMenu] });
 
@@ -94,8 +94,8 @@ export async function getPollResults(poll) {
 			datasets: [
 				{
 					data,
-					backgroundColor: options.join() == 'Yes,No' ? ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'] : 'rgba(54, 162, 235, 0.2)',
-					borderColor: options.join() == 'Yes,No' ? ['rgba(75, 192, 192, 1)', 'rgba(255,99,132,1)'] : 'rgba(54, 162, 235, 1)',
+					backgroundColor: options.join() === 'Yes,No' ? ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'] : 'rgba(54, 162, 235, 0.2)',
+					borderColor: options.join() === 'Yes,No' ? ['rgba(75, 192, 192, 1)', 'rgba(255,99,132,1)'] : 'rgba(54, 162, 235, 1)',
 					borderWidth: 1
 				}
 			]

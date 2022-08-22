@@ -22,7 +22,7 @@ export const command = {
 
 		if (!msg) {
 			await interaction.showModal(modal);
-			const modalInteraction = await interaction.awaitModalSubmit({ filter: interaction => interaction.customId == 'message-modal', time: 60 * 1000 }).catch(() => null);
+			const modalInteraction = await interaction.awaitModalSubmit({ filter: interaction => interaction.customId === 'message-modal', time: 60 * 1000 }).catch(() => null);
 			if (!modalInteraction) return interaction.followUp({ content: "You didn't reply in time", ephemeral: true });
 			msg = modalInteraction.fields.getTextInputValue('message');
 			interaction = modalInteraction;

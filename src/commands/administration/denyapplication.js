@@ -14,7 +14,7 @@ export const command = {
 		options: [...userOptions, { type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason to deny the applications' }]
 	},
 	async execute(interaction) {
-		const users = Array.from({ length: 24 }, (_, i) => interaction.options.getUser(`user-${i + 1}`)).filter(user => user?.bot == false);
+		const users = Array.from({ length: 24 }, (_, i) => interaction.options.getUser(`user-${i + 1}`)).filter(user => user?.bot === false);
 		let reason = interaction.options.getString('reason');
 
 		if (!users.length) return await interaction.reply({ content: 'Invalid users!', ephemeral: true });

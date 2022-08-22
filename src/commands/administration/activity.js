@@ -63,6 +63,7 @@ export const command = {
 			if (!Number.isInteger(typeNumber)) return await interaction.reply({ content: 'Invalid activity type!', ephemeral: true });
 
 			client.user.setActivity({ type: typeNumber, name });
+
 			const msg = index ? `Activity ${index} set` : `Random activity set`;
 			console.log(`[ACTIVITY] ${msg}`);
 			await interaction.reply(msg);
@@ -74,6 +75,7 @@ export const command = {
 
 			BOT_ACTIVITIES.push({ type, name });
 			writeJson(ACTIVITIES, JSON.stringify(BOT_ACTIVITIES, null, '	'));
+
 			await interaction.reply('Successfully created the activity');
 		} else if (subCommand === 'delete') {
 			const index = interaction.options.getInteger('index');
@@ -81,6 +83,8 @@ export const command = {
 
 			BOT_ACTIVITIES.splice(index - 1, 1);
 			writeJson(ACTIVITIES, JSON.stringify(BOT_ACTIVITIES, null, '	'));
+
+			console.log(`[ACTIVITY] Deleted activity ${index}`);
 			await interaction.reply(`Successfully deleted activity ${index}`);
 		}
 	}

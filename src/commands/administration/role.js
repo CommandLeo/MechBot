@@ -69,11 +69,13 @@ export const command = {
 
 		if (subcommand === 'give') {
 			await member.roles.add(role);
+
 			logRoleGiven(interaction.member, member, role, reason);
 			await interaction.reply({ content: `Given role ${role.name} to ${member}`, allowedMentions: { parse: [] } });
 		} else if (subcommand === 'give-temp') {
 			const duration = ms(interaction.options.getString('duration'));
 			await giveTempRole(member, role, duration, reason);
+
 			logTempRoleGiven(interaction.member, member, role, duration, reason);
 			await interaction.reply({ content: `Given role ${role.name} to ${member} for ${ms(duration, { long: true })}`, allowedMentions: { parse: [] } });
 		} else if (subcommand === 'remove') {

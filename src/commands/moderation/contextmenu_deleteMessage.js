@@ -10,7 +10,7 @@ export const command = {
 		type: ApplicationCommandType.Message
 	},
 	async execute(interaction) {
-		const message = await interaction.channel.messages.fetch(interaction.targetId);
+		const message = interaction.targetMessage;
 		await message.delete().catch(() => console.error(`Failed to context-menu delete a message in #${message.channel.name}`));
 
 		const DeletedMessages = client.sequelize.model('deleted_messages');
@@ -23,10 +23,10 @@ export const command = {
 		logMessageDeleted(message, interaction.member);
 		await interaction.reply({ content: 'Message deleted', ephemeral: true });
 
-		const MEME_CHANNEL = client.CHANNELS.MEMES;
+		const MEMES_CHANNEL = client.CHANNELS.MEMES;
 		const MEME_PRISONER_ROLE = client.ROLES.MEME_PRISONER;
 
-		if (interaction.channel.id === MEME_CHANNEL.id) {
+		if (interaction.channel.id === MEMES_CHANNEL.id) {
 			await giveTempRole(message.member, MEME_PRISONER_ROLE, 1000 * 60 * 60 * 24, 'Inappropriate behaviour in #memes');
 			logMemePrisoner(message.member);
 		}

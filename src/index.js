@@ -96,7 +96,7 @@ client.once('ready', async () => {
 		const MEMBER_ROLE = client.ROLES.MEMBER;
 		const STREAMING_ROLE = client.ROLES.STREAMING;
 
-		if (newPresence.user?.bot != false) return;
+		if (newPresence.user?.bot !== false) return;
 		if (newPresence?.guild.id !== client.GUILD.id) return;
 		if (!member?.roles.cache.has(MEMBER_ROLE.id)) return;
 

@@ -16,7 +16,7 @@ export const command = {
 		const roles = roleManager.cache.filter(role => role.name !== '@everyone').sort((roleA, roleB) => roleB.position - roleA.position);
 
 		const embed = new EmbedBuilder({
-			color: roleManager.color.color,
+			color: roleManager.color?.color,
 			title: 'User Information',
 			thumbnail: { url: member.displayAvatarURL() },
 			fields: [
@@ -24,7 +24,7 @@ export const command = {
 				{ name: 'User ID', value: member.id },
 				{ name: 'Joined Discord on', value: `${time(creationTime, 'D')}\n(${time(creationTime, 'R')})`, inline: true },
 				{ name: 'Joined this server on', value: `${time(joinTime, 'D')}\n(${time(joinTime, 'R')})`, inline: true },
-				{ name: `Role${roles.size > 1 ? 's' : ''}`, value: roles.toJSON().join(', ') }
+				{ name: 'Roles', value: roles.toJSON().join(', ') || 'None' }
 			]
 		});
 

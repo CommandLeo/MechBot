@@ -1,0 +1,216 @@
+{
+    "create-item-requests": [
+        {
+            "createItem": {
+                "item": {
+                    "title": "Discord Name and Tag",
+                    "description": "Example: Mech#6643",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Minecraft Username",
+                    "description": "Example: MechBot",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "What do you want to be called?",
+                    "description": "Example: Mech",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "How old are you?",
+                    "description": "Example: 2 years",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "What time zone you live in?",
+                    "description": "Example: CST",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "What do you think you can add to mechanists?",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {
+                                "paragraph": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Minecraft Experience",
+                    "description": "This sections is related to your Minecraft related experience. Following questions will revolve around your skills and experiences within the field of technical Minecraft",
+                    "pageBreakItem": {}
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "What areas of the game are you experienced in?",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {
+                                "paragraph": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Describe and link us images/videos of projects you are most proud of.",
+                    "description": "If you don't want to upload to sites like imgur or google drive, you can DM images to any admin on discord server.",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {
+                                "paragraph": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "What do the terms 'TPS' and 'MSPT' mean in context of minecraft server?",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {
+                                "paragraph": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Are you or have you been part of any other servers ? If you are, which ones? Please specify which one you are actively playing on.",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {
+                                "paragraph": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Other Info",
+                    "description": "This last section is as important as the first two. It allows you to introduce yourself and make a good impression. We take every answer seriously, so don't be shy to share a good quality of yours.",
+                    "pageBreakItem": {}
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Are you fluent in English? If no specify your skill level.",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "What interests do you have outside of Minecraft?",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "textQuestion": {
+                                "paragraph": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "createItem": {
+                "item": {
+                    "title": "Are you 100% sure that you have answered every question and included LINKS to an image and or video.",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "choiceQuestion": {
+                                "type": "CHECKBOX",
+                                "options": [
+                                    {
+                                        "value": "Yes"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

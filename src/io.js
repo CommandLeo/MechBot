@@ -7,6 +7,8 @@ const MECHANIST_PATH = `${ROOT}/data/mechanists.json`;
 const FAQ = `${ROOT}/data/faq.json`;
 const ACTIVITIES = `${ROOT}/data/activities.json`;
 
+const APPLICATION = `${ROOT}/data/application-requests.json`
+
 const CONFIG = `${ROOT}/config.json`;
 
 // Load the .env file
@@ -30,4 +32,4 @@ function writeJson(path, data) {
 	});
 }
 
-export { MECHANIST_PATH, FAQ, ACTIVITIES, CONFIG, readJson, writeJson };
+export { MECHANIST_PATH, FAQ, ACTIVITIES, APPLICATION, CONFIG, readJson, writeJson };

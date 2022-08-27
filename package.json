@@ -5,6 +5,8 @@
 		"start": "node ."
 	},
 	"dependencies": {
+		"@googleapis/drive": "^3.0.1",
+		"@googleapis/forms": "^1.1.1",
 		"chart.js": "^3.8.0",
 		"chartjs-node-canvas": "^4.1.6",
 		"discord.js": "^14.3.0",

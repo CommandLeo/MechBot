@@ -20,7 +20,7 @@ export const command = {
 				name: 'give',
 				description: 'Gives a role to a user',
 				options: [
-					{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to whom to give the role', required: true },
+					{ type: ApplicationCommandOptionType.User, name: 'user', description: 'The user to whom to give the role', required: true },
 					{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role to give', required: true },
 					{ type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason for giving the role' }
 				]
@@ -30,7 +30,7 @@ export const command = {
 				name: 'give-temp',
 				description: 'Temporarily gives a role to a user',
 				options: [
-					{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to whom to give the role', required: true },
+					{ type: ApplicationCommandOptionType.User, name: 'user', description: 'The user to whom to give the role', required: true },
 					{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role to give', required: true },
 					{ type: ApplicationCommandOptionType.String, name: 'duration', description: 'How long to give the role for', required: true },
 					{ type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason for giving the role' }
@@ -41,7 +41,7 @@ export const command = {
 				name: 'remove',
 				description: 'Removes a role from a user',
 				options: [
-					{ type: ApplicationCommandOptionType.User, name: 'member', description: 'The member to remove the role from', required: true },
+					{ type: ApplicationCommandOptionType.User, name: 'user', description: 'The user to remove the role from', required: true },
 					{ type: ApplicationCommandOptionType.Role, name: 'role', description: 'The role to remove', required: true },
 					{ type: ApplicationCommandOptionType.String, name: 'reason', description: 'The reason for removing the role' }
 				]
@@ -51,7 +51,7 @@ export const command = {
 	async execute(interaction) {
 		const subcommand = interaction.options.getSubcommand();
 		const role = interaction.options.getRole('role');
-		const member = interaction.options.getMember('member');
+		const member = interaction.options.getMember('user');
 		let reason = interaction.options.getString('reason');
 
 		if (role.name === '@everyone') return interaction.reply({ content: 'Invalid role', ephemeral: true });

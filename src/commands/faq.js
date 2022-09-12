@@ -1,4 +1,6 @@
 import { ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
+
+import { client } from '../index.js';
 import { FAQ, readJson } from '../io.js';
 
 export const command = {
@@ -15,5 +17,15 @@ export const command = {
 		const answer = data[question];
 
 		await interaction.reply(answer || { content: 'Invalid question', ephemeral: true });
+	},
+	async autocomplete(interaction) {
+		const entries = client.faqEntries;
+		const focusedValue = interaction.options.getFocused();
+
+		await interaction.respond(
+			Object.keys(entries)
+				.filter(entry => entry.toLowerCase().includes(focusedValue.toLowerCase()))
+				.map(entry => ({ name: entry, value: entry }))
+		);
 	}
 };

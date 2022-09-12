@@ -16,7 +16,15 @@ export const MECHANIST_DATA = readJson(MECHANIST_PATH);
 export const config = readJson(CONFIG);
 
 export const client = new Client({
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages],
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.DirectMessages
+	],
 	partials: [Partials.Message, Partials.Channel]
 });
 
@@ -40,6 +48,8 @@ client.once('ready', async () => {
 	const channels = await client.GUILD.channels.fetch();
 	client.CHANNELS = Object.fromEntries(Object.entries(MECHANIST_DATA.channels).map(([key, value]) => [key, channels.find(channel => channel.name.toLowerCase() === value.toLowerCase())]));
 
+	client.faqEntries = readJson(FAQ);
+
 	reloadCommands(client).catch(console.error);
 	checkStreaming(client).catch(console.error);
 	checkTempRoles(client).catch(console.error);
@@ -49,7 +59,7 @@ client.once('ready', async () => {
 		if (interaction.isCommand() || interaction.isUserContextMenuCommand()) {
 			const command = client.commands?.get(interaction.commandName);
 			if (!command) return;
-			command.execute(interaction).catch(error => {
+			await command.execute(interaction).catch(error => {
 				console.error(error);
 				const data = { content: 'There was an error while executing this command', ephemeral: true };
 				if (interaction.replied || interaction.deferred) {
@@ -58,6 +68,10 @@ client.once('ready', async () => {
 					interaction.reply(data);
 				}
 			});
+		} else if (interaction.isAutocomplete()) {
+			const command = client.commands?.get(interaction.commandName);
+			if (!command) return;
+			await command.autocomplete(interaction).catch(console.error);
 		} else if (interaction.isButton()) {
 			if (interaction.customId.startsWith('show-deleted-message')) {
 				await showDeletedMessage(interaction).catch(console.error);
@@ -69,17 +83,6 @@ client.once('ready', async () => {
 		} else if (interaction.isSelectMenu()) {
 			if (interaction.customId.startsWith('poll-selectoption')) {
 				await handlePollVoteReceived(interaction).catch(console.error);
-			}
-		} else if (interaction.isAutocomplete()) {
-			if (interaction.commandName === 'faq') {
-				const questions = readJson(FAQ);
-
-				const focusedValue = interaction.options.getFocused();
-				await interaction.respond(
-					Object.keys(questions)
-						.filter(question => question.toLowerCase().includes(focusedValue.toLowerCase()))
-						.map(question => ({ name: question, value: question }))
-				);
 			}
 		}
 	});
